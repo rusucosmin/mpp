@@ -10,9 +10,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Created by cosmin on 3/5/17.
- */
 public class InMemoryRepository<ID, T extends BaseEntity<ID>> implements Repository<ID, T> {
     private Map<ID, T> entities;
     private Validator<T> validator;

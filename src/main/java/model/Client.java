@@ -1,8 +1,5 @@
 package model;
 
-/**
- * Created by cosmin on 3/5/17.
- */
 public class Client extends BaseEntity<Integer> {
     private  String name, email, adress;
     public Client() {

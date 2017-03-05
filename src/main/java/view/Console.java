@@ -3,9 +3,6 @@ package view;
 import service.BookService;
 import service.ClientService;
 
-/**
- * Created by cosmin on 3/5/17.
- */
 public class Console {
     BookService bookService;
     ClientService clientService;
