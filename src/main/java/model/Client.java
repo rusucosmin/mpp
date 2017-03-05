@@ -1,14 +1,14 @@
 package model;
 
 public class Client extends BaseEntity<Integer> {
-    private  String name, email, adress;
+    private String name, email, address;
     public Client() {
     }
-    public Client(int id,String name, String email, String adress) {
+    public Client(int id, String name, String email, String address) {
         this.setID(id);
         this.name = name;
         this.email = email;
-        this.adress = adress;
+        this.address = address;
     }
 
     public String getName() {
@@ -19,8 +19,8 @@ public class Client extends BaseEntity<Integer> {
         return email;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
     public void setName(String name) {
@@ -31,8 +31,8 @@ public class Client extends BaseEntity<Integer> {
         this.email = email;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Client extends BaseEntity<Integer> {
         return "Client{" +
                 "name='" + name + "'" +
                 ", email='" + email + "'" +
-                ", adress='" + adress + "'" +
+                ", address='" + address + "'" +
                 "} " + super.toString();
     }
 }

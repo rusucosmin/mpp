@@ -17,4 +17,5 @@ dependency-reduced-pom.xml
 
 .idea
 
-
+# vim swap files
+**/*.swp
