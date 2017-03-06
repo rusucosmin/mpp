@@ -3,10 +3,9 @@ package service;
 import model.Book;
 import repository.Repository;
 
-public class BookService {
+public class BookService extends CRUDService<Integer, Book> {
     // TODO
-    private Repository<Integer, Book> bookRepository;
     public BookService(Repository<Integer, Book> bookRepository) {
-        this.bookRepository = bookRepository;
+        super(bookRepository);
     }
 }

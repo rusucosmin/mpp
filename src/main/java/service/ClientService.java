@@ -3,10 +3,9 @@ package service;
 import model.Client;
 import repository.Repository;
 
-public class ClientService {
+public class ClientService extends CRUDService<Integer, Client> {
     // TODO
-    private Repository<Integer, Client> clientRepository;
     public ClientService(Repository<Integer, Client> clientRepository) {
-        this.clientRepository = clientRepository;
+        super(clientRepository);
     }
 }
