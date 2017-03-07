@@ -2,9 +2,11 @@ package view;
 
 import model.Book;
 import model.Client;
+import model.validators.ValidatorException;
 
 import service.BookService;
 import service.ClientService;
+
 
 import java.util.HashMap;
 import java.util.Scanner;
@@ -13,10 +15,12 @@ import java.util.stream.*;
 public class Console {
     private BookService bookService;
     private ClientService clientService;
+    private Scanner stdin;
 
     public Console(BookService bookService, ClientService clientService) {
         this.bookService = bookService;
         this.clientService = clientService;
+        this.stdin = new Scanner(System.in);
     }
 
     public void printAllBooks() {
@@ -24,19 +28,49 @@ public class Console {
                      .forEach(x -> System.out.println(x));
     }
 
+    public int readInt(String prompt, String errorMessage) {
+        int ret;
+        while(true) {
+            System.out.print(prompt);
+            try {
+                ret = Integer.parseInt(this.stdin.nextLine());
+                return ret;
+            } catch(Exception e) {
+                System.out.printf("Error: %s\n", errorMessage);
+            }
+        }
+    }
+
+    public String readString(String prompt) {
+        System.out.print(prompt);
+        return this.stdin.nextLine();
+    }
+
+
     public void addBook() {
-        //TODO
+        int id = this.readInt("Book ID: ", "Book ID must be an integer");
+        String author = this.readString("Author: ");
+        String title = this.readString("Title: ");
+        int year = this.readInt("Year: ", "Publish year must be an integer");
+        int cnt = this.readInt("Quantity: ", "Book quantity must be an integer");
+
+        try {
+            Book b = new Book(id, author, title, year, cnt);
+            this.bookService.create(b);
+        } catch(ValidatorException e) {
+            e.printStackTrace(System.out);
+        }
     }
 
     public void showMenu() {
         System.out.println("1. Print all books");
-        System.out.println("2. Add book (not implemented)");
+        System.out.println("2. Add book");
         System.out.println("x. Exit");
     }
 
-    public void readAndProcessCommand(Scanner in) {
+    public void readAndProcessCommand() {
         System.out.print("> ");
-        String commandID = in.nextLine();
+        String commandID = this.stdin.nextLine();
 
         switch(commandID) {
             case "1":
@@ -44,7 +78,8 @@ public class Console {
                 this.printAllBooks();
                 break;
             case "2":
-                System.out.println("add book (not implemented");
+                System.out.println("command: add book");
+                this.addBook();
                 break;
             case "x":
                 System.exit(0);
@@ -57,13 +92,12 @@ public class Console {
 
 
     public void run() {
-        Scanner in = new Scanner(System.in);
 
         System.out.println(">-----Book Store-----<");
 
         while(true) {
             this.showMenu();
-            this.readAndProcessCommand(in);
+            this.readAndProcessCommand();
         }
 
     }
