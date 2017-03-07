@@ -19,3 +19,7 @@ dependency-reduced-pom.xml
 
 # vim swap files
 **/*.swp
+
+build
+gradlew*
+.gradle
