@@ -21,6 +21,10 @@ public class CRUDService<ID, T extends BaseEntity<ID>> {
         return this.entityRepository.findOne(id);
     }
 
+    public Iterable<T> readAll() {
+        return this.entityRepository.findAll();
+    }
+
     public Optional<T> update(T entity) throws ValidatorException {
         return this.entityRepository.update(entity);
     }
