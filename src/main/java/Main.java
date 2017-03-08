@@ -1,10 +1,8 @@
-import hello.Greeter;
 import model.Book;
 import model.Client;
 import model.validators.BookValidator;
 import model.validators.ClientValidator;
 import model.validators.Validator;
-import org.joda.time.LocalTime;
 import repository.InMemoryRepository;
 import repository.Repository;
 import service.BookService;

@@ -5,33 +5,33 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Calendar;
 
 public class BookValidator implements Validator<Book> {
-    public void validate(Book entity) throws ValidatorException {
+    public void validate(Book entity) throws BookException {
         this.validateAuthor(entity);
         this.validateTitle(entity);
         this.validateYear(entity);
         this.validateCnt(entity);
     }
 
-    private void validateAuthor(Book entity) throws ValidatorException {
+    private void validateAuthor(Book entity) throws BookException {
         if(StringUtils.isEmpty(entity.getAuthor()))
-            throw new ValidatorException("Author cannot be null");
+            throw new BookException("Author cannot be null");
     }
 
-    private void validateTitle(Book entity) throws ValidatorException {
+    private void validateTitle(Book entity) throws BookException {
         if(StringUtils.isEmpty(entity.getTitle()))
-            throw new ValidatorException("Title cannot be null");
+            throw new BookException("Title cannot be null");
     }
 
-    private void validateYear(Book entity) throws ValidatorException {
+    private void validateYear(Book entity) throws BookException {
         Calendar now = Calendar.getInstance();
         int currentYear = now.get(Calendar.YEAR);
 
         if(entity.getYear() > currentYear)
-            throw new ValidatorException("Year cannot be in the future");
+            throw new BookException("Year cannot be in the future");
     }
 
-    private void validateCnt(Book entity) throws ValidatorException {
+    private void validateCnt(Book entity) throws BookException {
         if(entity.getCnt() < 0)
-            throw new ValidatorException("Cannot have negative book count");
+            throw new BookException("Cannot have negative book count");
     }
 }
