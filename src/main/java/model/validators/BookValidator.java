@@ -26,7 +26,7 @@ public class BookValidator implements Validator<Book> {
         Calendar now = Calendar.getInstance();
         int currentYear = now.get(Calendar.YEAR);
 
-        if(entity.getYear() > currentYear)
+        if(currentYear < 0 || entity.getYear() > currentYear)
             throw new BookException("Year cannot be in the future");
     }
 

@@ -28,6 +28,11 @@ public class Console {
                      .forEach(x -> System.out.println(x));
     }
 
+    public void printAllClients() {
+        StreamSupport.stream(this.clientService.readAll().spliterator(), false)
+                     .forEach(x -> System.out.println(x));
+    }
+
     public int readInt(String prompt, String errorMessage) {
         int ret;
         while(true) {
@@ -62,9 +67,25 @@ public class Console {
         }
     }
 
+    public void addClient() {
+        int id = this.readInt("Client ID: ", "Client ID must be an integer");
+        String name = this.readString("Name: ");
+        String email = this.readString("Email: ");
+        String address = this.readString("Address: ");
+
+        try {
+            Client c = new Client(id, name, email, address);
+            this.clientService.create(c);
+        } catch(ValidatorException e) {
+            e.printStackTrace(System.out);
+        }
+    }
+
     public void showMenu() {
         System.out.println("1. Print all books");
-        System.out.println("2. Add book");
+        System.out.println("2. Print all clients");
+        System.out.println("3. Add book");
+        System.out.println("4. Add client");
         System.out.println("x. Exit");
     }
 
@@ -78,8 +99,16 @@ public class Console {
                 this.printAllBooks();
                 break;
             case "2":
+                System.out.println("command: print all clients");
+                this.printAllClients();
+                break;
+            case "3":
                 System.out.println("command: add book");
                 this.addBook();
+                break;
+            case "4":
+                System.out.println("command: add client");
+                this.addClient();
                 break;
             case "x":
                 System.exit(0);
