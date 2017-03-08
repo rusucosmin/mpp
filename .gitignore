@@ -21,5 +21,4 @@ dependency-reduced-pom.xml
 **/*.swp
 
 build
-gradlew*
 .gradle
