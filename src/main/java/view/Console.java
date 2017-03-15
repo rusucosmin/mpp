@@ -17,22 +17,39 @@ public class Console {
     private ClientService clientService;
     private Scanner stdin;
 
+    /**
+     * Console - class that executes the commands that the user dictates
+     * @param bookService - to handle book operations
+     * @param clientService - to handle client operations
+     */
     public Console(BookService bookService, ClientService clientService) {
         this.bookService = bookService;
         this.clientService = clientService;
         this.stdin = new Scanner(System.in);
     }
 
+    /**
+     *  Method prints all the available books
+     */
     public void printAllBooks() {
         StreamSupport.stream(this.bookService.readAll().spliterator(), false)
                      .forEach(x -> System.out.println(x));
     }
 
+    /**
+     *  Method prints all the available clients
+     */
     public void printAllClients() {
         StreamSupport.stream(this.clientService.readAll().spliterator(), false)
                      .forEach(x -> System.out.println(x));
     }
 
+    /**
+     *  Method reads an integer from stdin
+     * @param prompt - message to show before input
+     * @param errorMessage - message to show in case of an error (a non integer number inputted)
+     * @return the number that was read
+     */
     public int readInt(String prompt, String errorMessage) {
         int ret;
         while(true) {
@@ -46,12 +63,20 @@ public class Console {
         }
     }
 
+    /**
+     * Method reads a string from stdin
+     * @param prompt - message to show before input
+     * @return the string that was read
+     */
     public String readString(String prompt) {
         System.out.print(prompt);
         return this.stdin.nextLine();
     }
 
 
+    /**
+     * Method to add a new book from the user
+     */
     public void addBook() {
         int id = this.readInt("Book ID: ", "Book ID must be an integer");
         String author = this.readString("Author: ");
@@ -67,6 +92,9 @@ public class Console {
         }
     }
 
+    /**
+     * Method adds a new client from the user
+     */
     public void addClient() {
         int id = this.readInt("Client ID: ", "Client ID must be an integer");
         String name = this.readString("Name: ");
@@ -81,6 +109,9 @@ public class Console {
         }
     }
 
+    /**
+     * Method shows the main menu
+     */
     public void showMenu() {
         System.out.println("1. Print all books");
         System.out.println("2. Print all clients");
@@ -89,6 +120,9 @@ public class Console {
         System.out.println("x. Exit");
     }
 
+    /**
+     * Method read and process command
+     */
     public void readAndProcessCommand() {
         System.out.print("> ");
         String commandID = this.stdin.nextLine();
@@ -119,7 +153,9 @@ public class Console {
         System.out.println();
     }
 
-
+    /**
+     * Main event loop
+     */
     public void run() {
 
         System.out.println(">-----Book Store-----<");

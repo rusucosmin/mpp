@@ -1,5 +1,8 @@
 package model.validators;
 
+/**
+ * ClientException
+ */
 public class ClientException extends ValidatorException {
     public ClientException(Throwable cause) {
         super(cause);

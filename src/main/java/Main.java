@@ -10,6 +10,10 @@ import service.ClientService;
 import view.Console;
 
 public class Main {
+    /**
+     * Main class to configure and run the application
+     * @param args
+     */
     public static void main(String[] args) {
         // in memory repo
         Validator<Book> bookValidator = new BookValidator();

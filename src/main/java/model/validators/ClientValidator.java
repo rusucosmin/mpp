@@ -4,6 +4,9 @@ import model.Client;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 
+/**
+ * ClientValidator
+ */
 public class ClientValidator implements Validator<Client> {
     public void validate(Client entity) throws ClientException {
         this.validateName(entity);

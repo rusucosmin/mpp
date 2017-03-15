@@ -1,5 +1,8 @@
 package model.validators;
 
+/**
+ * BookExceptino
+ */
 public class BookException extends ValidatorException {
     public BookException(Throwable cause) {
         super(cause);

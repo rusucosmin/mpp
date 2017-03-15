@@ -4,6 +4,9 @@ import model.Book;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Calendar;
 
+/**
+ * BookValidator - validates a specific Book
+ */
 public class BookValidator implements Validator<Book> {
     public void validate(Book entity) throws BookException {
         this.validateAuthor(entity);
