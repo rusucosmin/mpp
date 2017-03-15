@@ -3,6 +3,7 @@ package view;
 import model.Book;
 import model.Client;
 import model.validators.BookException;
+import model.validators.ClientException;
 import model.validators.ValidatorException;
 
 import service.BookService;
@@ -115,12 +116,22 @@ public class Console {
      * Method shows the main menu
      */
     public void showMenu() {
-        System.out.println("1. Print all books");
-        System.out.println("2. Print all clients");
-        System.out.println("3. Add book");
-        System.out.println("4. Add client");
-        System.out.println("5. Update book");
-        System.out.println("6. Delete book");
+        System.out.println("BOOKS");
+        System.out.println("-----");
+        System.out.println("1. Print all");
+        System.out.println("2. Add");
+        System.out.println("3. Update");
+        System.out.println("4. Delete");
+        System.out.println();
+
+        System.out.println("CLIENTS");
+        System.out.println("-------");
+        System.out.println("5. Print all");
+        System.out.println("6. Add");
+        System.out.println("7. Update");
+        System.out.println("8. Delete");
+
+        System.out.println();
         System.out.println("x. Exit");
     }
 
@@ -137,24 +148,32 @@ public class Console {
                 this.printAllBooks();
                 break;
             case "2":
-                System.out.println("command: print all clients");
-                this.printAllClients();
-                break;
-            case "3":
                 System.out.println("command: add book");
                 this.addBook();
                 break;
-            case "4":
-                System.out.println("command: add client");
-                this.addClient();
-                break;
-            case "5":
+            case "3":
                 System.out.println("command: update book");
                 this.updateBook();
                 break;
-            case "6":
+            case "4":
                 System.out.println("command: delete book");
                 this.deleteBook();
+                break;
+            case "5":
+                System.out.println("command: print all clients");
+                this.printAllClients();
+                break;
+            case "6":
+                System.out.println("command: add client");
+                this.addClient();
+                break;
+            case "7":
+                System.out.println("command: update client");
+                this.updateClient();
+                break;
+            case "8":
+                System.out.println("command: delete client");
+                this.deleteClient();
                 break;
             case "x":
                 System.exit(0);
@@ -174,6 +193,14 @@ public class Console {
             System.out.println("Book ID not present");
     }
 
+    private void deleteClient() {
+        int id = this.readInt("Client ID: ", "Client ID must be an integer");
+        Optional<Client> opt = this.clientService.delete(id);
+        if(opt.isPresent())
+            System.out.println("Successfully removed Client:\n" + opt.get().toString());
+        else
+            System.out.println("Client ID not present");
+    }
 
     private void updateBook() {
         int id = this.readInt("Book ID: ", "Book ID must be an integer");
@@ -192,6 +219,26 @@ public class Console {
         }
         else {
             System.out.println("Book ID not present");
+        }
+    }
+
+    private void updateClient() {
+        int id = this.readInt("Client ID: ", "Client ID must be an integer");
+        Optional<Client> opt = this.clientService.read(id);
+        if(opt.isPresent()) {
+            String name = this.readString("Name: ");
+            String email = this.readString("Email: ");
+            String address = this.readString("Address: ");
+
+            try {
+                Client c = new Client(id, name, email, address);
+                this.clientService.update(c);
+            } catch(ClientException e) {
+                e.printStackTrace(System.out);
+            }
+        }
+        else {
+            System.out.println("Client ID not present");
         }
     }
 
