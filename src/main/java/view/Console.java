@@ -2,6 +2,7 @@ package view;
 
 import model.Book;
 import model.Client;
+import model.validators.BookException;
 import model.validators.ValidatorException;
 
 import service.BookService;
@@ -9,6 +10,7 @@ import service.ClientService;
 
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.*;
 
@@ -117,6 +119,8 @@ public class Console {
         System.out.println("2. Print all clients");
         System.out.println("3. Add book");
         System.out.println("4. Add client");
+        System.out.println("5. Update book");
+        System.out.println("6. Delete book");
         System.out.println("x. Exit");
     }
 
@@ -144,6 +148,14 @@ public class Console {
                 System.out.println("command: add client");
                 this.addClient();
                 break;
+            case "5":
+                System.out.println("command: update book");
+                this.updateBook();
+                break;
+            case "6":
+                System.out.println("command: delete book");
+                this.deleteBook();
+                break;
             case "x":
                 System.exit(0);
                 break;
@@ -153,11 +165,40 @@ public class Console {
         System.out.println();
     }
 
+    private void deleteBook() {
+        int id = this.readInt("Book ID: ", "Book ID must be an integer");
+        Optional<Book> opt = this.bookService.delete(id);
+        if(opt.isPresent())
+            System.out.println("Successfully removed Book:\n" + opt.get().toString());
+        else
+            System.out.println("Book ID not present");
+    }
+
+
+    private void updateBook() {
+        int id = this.readInt("Book ID: ", "Book ID must be an integer");
+        Optional<Book> opt = this.bookService.read(id);
+        if(opt.isPresent()) {
+            String author = this.readString("Author: ");
+            String title = this.readString("Title: ");
+            int year = this.readInt("Year: ", "Publish year must be an integer");
+            int cnt = this.readInt("Quantity: ", "Book quantity must be an integer");
+            try {
+                Book b = new Book(id, author, title, year, cnt);
+                this.bookService.update(b);
+            } catch(BookException e) {
+                e.printStackTrace(System.out);
+            }
+        }
+        else {
+            System.out.println("Book ID not present");
+        }
+    }
+
     /**
      * Main event loop
      */
     public void run() {
-
         System.out.println(">-----Book Store-----<");
 
         while(true) {
