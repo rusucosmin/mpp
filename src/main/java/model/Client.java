@@ -7,7 +7,7 @@ public class Client extends BaseEntity<Integer> {
     private String name, email, address;
     public Client() {
     }
-    public Client(int id, String name, String email, String address) {
+    public Client(Integer id, String name, String email, String address) {
         this.setID(id);
         this.name = name;
         this.email = email;

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<clients>
+    <model.Client id="1">
+        <name>Cosmin Rusu</name>
+        <email>cosmin@kuende.com</email>
+        <address>Strada Principala</address>
+    </model.Client>
+    <model.Client id="2">
+        <name>Sergiu Pantof</name>
+        <email>sergiu@pantof.ro</email>
+        <address>Strada Secundara</address>
+    </model.Client>
+</clients>

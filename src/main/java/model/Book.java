@@ -5,12 +5,12 @@ package model;
  */
 public class Book extends BaseEntity<Integer> {
     private String title, author;
-    private int year, cnt;
+    private Integer year, cnt;
 
     public Book() {
     }
 
-    public Book(int id, String author, String title, int year, int cnt) {
+    public Book(Integer id, String author, String title, Integer year, Integer cnt) {
         this.setID(id);
         this.title = title;
         this.author = author;
@@ -38,7 +38,7 @@ public class Book extends BaseEntity<Integer> {
      * Method return the book year
      * @return
      */
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
@@ -46,7 +46,7 @@ public class Book extends BaseEntity<Integer> {
      * Method return the number of copies of each book
      * @return
      */
-    public int getCnt() {
+    public Integer getCnt() {
         return cnt;
     }
 
@@ -70,7 +70,7 @@ public class Book extends BaseEntity<Integer> {
      * Method sets the year when the book was written
      * @param year
      */
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -78,7 +78,7 @@ public class Book extends BaseEntity<Integer> {
      * Method sets the number of copies of the book
      * @param cnt
      */
-    public void setCnt(int cnt) {
+    public void setCnt(Integer cnt) {
         this.cnt = cnt;
     }
 
