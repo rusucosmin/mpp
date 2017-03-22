@@ -9,6 +9,7 @@ import repository.InMemoryRepository;
 import repository.Repository;
 import repository.XmlRepository;
 import repository.BookDatabaseRepository;
+import repository.ClientDatabaseRepository;
 import service.BookService;
 import service.ClientService;
 import service.OrderService;
@@ -30,7 +31,11 @@ public class Main {
                 "jdbc:postgresql://localhost:5432/mpp",
                 "sergiu",
                 "asdf1234");
-        Repository<Integer, Client> clientRepository = new InMemoryRepository<Integer, Client>(clientValidator);
+        Repository<Integer, Client> clientRepository = new ClientDatabaseRepository(
+                clientValidator,
+                "jdbc:postgresql://localhost:5432/mpp",
+                "sergiu",
+                "asdf1234");
         BookService bookService = new BookService(bookRepository);
         ClientService clientService = new ClientService(clientRepository);
         Console console = new Console(bookService, clientService);

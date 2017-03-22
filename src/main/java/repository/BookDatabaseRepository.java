@@ -78,7 +78,6 @@ public class BookDatabaseRepository extends DatabaseConnection implements Reposi
                 int year = rs.getInt("year");
 
                 ret.add(new Book(bookID, author, title, year, cnt));
-                break;
             }
         } catch(Exception e) {
             e.printStackTrace();
@@ -101,12 +100,12 @@ public class BookDatabaseRepository extends DatabaseConnection implements Reposi
         validator.validate(b);
 
         String query = "INSERT INTO books (id, title, author, year, cnt) " +
-            String.format("VALUES (%d, %s, %s, %d, %d);", b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt());
+            String.format("VALUES (%d, '%s', '%s', %d, %d);", b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt());
 
-        executeQuery(query);
+        executeUpdate(query);
 
-        // TODO: this should probably not be null
-        return null;
+        // TODO: make sure this is what I want to return
+        return Optional.ofNullable(b);
     }
 
     /**
@@ -120,11 +119,12 @@ public class BookDatabaseRepository extends DatabaseConnection implements Reposi
             throw new IllegalArgumentException("id must not be null");
         }
 
-        String query = "DELETE FROM books WHERE id='" + id.toString() + "';";
-        executeQuery(query);
+        Optional<Book> ret = findOne(id);
 
-        // TODO: this should probably not be null
-        return null;
+        String query = "DELETE FROM books WHERE id='" + id.toString() + "';";
+        executeUpdate(query);
+
+        return ret;
     }
 
     /**
@@ -140,11 +140,11 @@ public class BookDatabaseRepository extends DatabaseConnection implements Reposi
 
         validator.validate(b);
 
-        String query = String.format("UPDATE books SET id='%i', title='%s', author='%s', year='%d', cnt='%d' WHERE id='%d'", b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt(), b.getID());
+        String query = String.format("UPDATE books SET id='%d', title='%s', author='%s', year='%d', cnt='%d' WHERE id='%d';", b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt(), b.getID());
 
-        executeQuery(query);
+        executeUpdate(query);
 
-        // TODO: this should probably not be null
-        return null;
+        // TODO: make sure this is what I want to return
+        return Optional.ofNullable(b);
     }
 }

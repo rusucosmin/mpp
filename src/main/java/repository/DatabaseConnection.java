@@ -40,13 +40,17 @@ public class DatabaseConnection {
             ret = stmt.executeQuery(sqlQuery);
         } catch(Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if(stmt != null)
-                    stmt.close();
-            } catch(SQLException e) {
-                e.printStackTrace();
-            }
+        }
+
+        // finally {
+
+
+        //     try {
+        //         if(stmt != null)
+        //             stmt.close();
+        //     } catch(SQLException e) {
+        //         e.printStackTrace();
+        //     }
 
             // better close the connection when the repo gets destroyed
             // try {
@@ -55,7 +59,18 @@ public class DatabaseConnection {
             // } catch(SQLException e) {
             //     e.printStackTrace();
             // }
-        }
+        // }
         return ret;
+    }
+
+    protected void executeUpdate(String sqlQuery) {
+        Statement stmt = null;
+
+        try {
+            stmt = this.conn.createStatement();
+            stmt.executeUpdate(sqlQuery);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
