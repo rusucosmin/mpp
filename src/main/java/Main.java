@@ -8,6 +8,8 @@ import model.validators.ValidatorException;
 import repository.InMemoryRepository;
 import repository.Repository;
 import repository.XmlRepository;
+import repository.BookDatabaseRepository;
+import repository.ClientDatabaseRepository;
 import service.BookService;
 import service.ClientService;
 import service.OrderService;
@@ -24,8 +26,16 @@ public class Main {
         // in memory repo
         Validator<Book> bookValidator = new BookValidator();
         Validator<Client> clientValidator = new ClientValidator();
-        Repository<Integer, Book> bookRepository = new XmlRepository<>(bookValidator, "./data/books.xml");
-        Repository<Integer, Client> clientRepository = new XmlRepository<>(clientValidator, "./data/clients.xml");
+        Repository<Integer, Book> bookRepository = new BookDatabaseRepository(
+                bookValidator,
+                "jdbc:postgresql://localhost:5432/mpp",
+                "sergiu",
+                "asdf1234");
+        Repository<Integer, Client> clientRepository = new ClientDatabaseRepository(
+                clientValidator,
+                "jdbc:postgresql://localhost:5432/mpp",
+                "sergiu",
+                "asdf1234");
         BookService bookService = new BookService(bookRepository);
         ClientService clientService = new ClientService(clientRepository);
         Console console = new Console(bookService, clientService);
