@@ -24,12 +24,12 @@ public class BookTest {
 
     @Test
     public void getYear() {
-        assertEquals(book.getYear(), 2010);
+        assertEquals(book.getYear(), new Integer(2010));
     }
 
     @Test
     public void getCnt() {
-        assertEquals(book.getCnt(), 69);
+        assertEquals(book.getCnt(), new Integer(69));
     }
 
     @Test
@@ -47,13 +47,13 @@ public class BookTest {
     @Test
     public void setYear() {
         book.setYear(2009);
-        assertEquals(book.getYear(), 2009);
+        assertEquals(book.getYear(), new Integer(2009));
     }
 
     @Test
     public void setCnt() {
         book.setCnt(100);
-        assertEquals(book.getCnt(), 100);
+        assertEquals(book.getCnt(), new Integer(100));
     }
 
     @Test
