@@ -6,16 +6,16 @@
         <year>2010</year>
         <cnt>100</cnt>
     </model.Book>
+    <model.Book id="1">
+        <title>y</title>
+        <author>x</author>
+        <year>10</year>
+        <cnt>10</cnt>
+    </model.Book>
     <model.Book id="2">
         <title>the game</title>
         <author>neil</author>
         <year>2011</year>
         <cnt>2</cnt>
-    </model.Book>
-    <model.Book id="1">
-        <title>1</title>
-        <author>1</author>
-        <year>1</year>
-        <cnt>1</cnt>
     </model.Book>
 </books>
