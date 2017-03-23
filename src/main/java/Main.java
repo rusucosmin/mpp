@@ -40,6 +40,10 @@ public class Main {
                 "sergiu",
                 "asdf1234");
 
+        bookRepository = new XmlRepository<>(bookValidator, "./data/books.xml");
+        clientRepository = new XmlRepository<>(clientValidator, "./data/clients.xml");
+        orderRepository = new XmlRepository<>(orderValidator, "./data/orders.xml");
+
         BookService bookService = new BookService(bookRepository);
         ClientService clientService = new ClientService(clientRepository);
         OrderService orderService = new OrderService(orderRepository, bookService, clientService);
