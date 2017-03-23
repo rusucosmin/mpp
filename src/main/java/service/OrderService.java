@@ -31,6 +31,7 @@ public class OrderService extends CRUDService<Integer, Order> {
     public Optional<Order> create(Order order) throws OrderException {
         int bookId = order.getBookID();
         int clientId = order.getClientID();
+        Optional<Client> optClient = clientService.read(clientId);
         if (!clientService.read(clientId).isPresent())
             throw new OrderException("Inexistent Client");
         Optional<Book> optBook = bookService.read(bookId);

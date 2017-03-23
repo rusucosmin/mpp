@@ -8,10 +8,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
@@ -81,7 +78,20 @@ public class XmlWriter<ID, T extends BaseEntity<ID>> {
         parent.appendChild(node);
     }
 
-    public void clearFile() {
-        // TODO(cosmin)
+    public void clearFile() throws ParserConfigurationException, TransformerException, IOException, SAXException {
+        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(this.fileName);
+        Element root = document.getDocumentElement();
+
+        while(root.hasChildNodes())
+            root.removeChild(root.getFirstChild());
+
+        //save in file
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+        transformer.transform(new DOMSource(document),new StreamResult(new File(this.fileName)));
     }
 }

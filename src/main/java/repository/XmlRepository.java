@@ -62,10 +62,11 @@ public class XmlRepository<ID, T extends BaseEntity<ID>> extends InMemoryReposit
 
     @Override
     public Optional<T> save(T entity) throws ValidatorException {
-        Optional<T> optional = super.save(entity);
+        Optional<T> optional = super.findOne(entity.getID());
         if(optional.isPresent())
             return optional;
         try {
+            System.out.println("save to file ");
             new XmlWriter<ID, T>(this.fileName).save(entity);
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -78,7 +79,7 @@ public class XmlRepository<ID, T extends BaseEntity<ID>> extends InMemoryReposit
         } catch (TransformerException e) {
             e.printStackTrace();
         }
-        return Optional.empty();
+        return optional;
     }
 
     @Override
@@ -87,9 +88,21 @@ public class XmlRepository<ID, T extends BaseEntity<ID>> extends InMemoryReposit
         if(!optional.isPresent())
             return optional;
         XmlWriter<ID, T> xmlWriter = new XmlWriter<ID, T>(this.fileName);
-        xmlWriter.clearFile();
+        try {
+            System.out.println("delet(ID id) clear file");
+            xmlWriter.clearFile();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
         for(T el : super.findAll())
             try {
+                System.out.println("delte(DI id) put in file");
                 xmlWriter.save(el);
             } catch (ParserConfigurationException e) {
                 e.printStackTrace();
@@ -102,7 +115,7 @@ public class XmlRepository<ID, T extends BaseEntity<ID>> extends InMemoryReposit
             } catch (TransformerException e) {
                 e.printStackTrace();
             }
-        return Optional.empty();
+        return optional;
     }
 
     @Override
@@ -111,9 +124,21 @@ public class XmlRepository<ID, T extends BaseEntity<ID>> extends InMemoryReposit
         if(!optional.isPresent())
             return optional;
         XmlWriter<ID, T> xmlWriter = new XmlWriter<ID, T>(this.fileName);
-        xmlWriter.clearFile();
+        try {
+            System.out.println("clear file");
+            xmlWriter.clearFile();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
         for(T el : super.findAll())
             try {
+                System.out.println("put in file");
                 xmlWriter.save(el);
             } catch (ParserConfigurationException e) {
                 e.printStackTrace();
@@ -126,6 +151,6 @@ public class XmlRepository<ID, T extends BaseEntity<ID>> extends InMemoryReposit
             } catch (TransformerException e) {
                 e.printStackTrace();
             }
-        return Optional.empty();
+        return optional;
     }
 }

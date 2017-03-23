@@ -12,4 +12,10 @@
         <year>2011</year>
         <cnt>2</cnt>
     </model.Book>
+    <model.Book id="1">
+        <title>1</title>
+        <author>1</author>
+        <year>1</year>
+        <cnt>1</cnt>
+    </model.Book>
 </books>
