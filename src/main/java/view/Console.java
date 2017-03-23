@@ -11,9 +11,7 @@ import service.BookService;
 import service.ClientService;
 import service.OrderService;
 
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.*;
 
 public class Console {
@@ -60,7 +58,7 @@ public class Console {
     }
 
     /**
-     *  Method reads an integer from stdin
+     * Method reads an integer from stdin
      * @param prompt - message to show before input
      * @param errorMessage - message to show in case of an error (a non integer number inputted)
      * @return the number that was read
@@ -171,6 +169,10 @@ public class Console {
         System.out.println("12. Delete");
         System.out.println();
 
+        System.out.println("MISCELLANEOUS");
+        System.out.println("-------");
+        System.out.println("13. Sort Clients by total Books");
+
         System.out.println("x. Exit");
     }
 
@@ -238,6 +240,10 @@ public class Console {
                 System.out.println("command: delete order");
                 this.deleteOrder();
                 break;
+            case "13":
+                System.out.println("command: sort clients");
+                this.sortClients();
+                break;
             case "x":
                 System.exit(0);
                 break;
@@ -246,6 +252,13 @@ public class Console {
         }
         System.out.println();
     }
+
+    private void sortClients() {
+        List<Map.Entry<Client, Integer>> list =
+                orderService.getStatistics();
+        list.stream().forEach(x -> System.out.println(x.getKey() + " total: " + x.getValue()));
+    }
+
 
     private void deleteBook() {
         int id = this.readInt("Book ID: ", "Book ID must be an integer");
