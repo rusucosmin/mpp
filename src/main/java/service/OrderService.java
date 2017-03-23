@@ -74,7 +74,10 @@ public class OrderService extends CRUDService<Integer, Order> {
         StreamSupport.stream(this.readAll().spliterator(), false)
             .forEach(x -> {
                 Client c = clientService.read(x.getClientID()).get();
-                int lastTotal = cnt.get(c);
+                Integer lastTotal = cnt.get(c);
+                if(lastTotal == null)
+                    lastTotal = new Integer(0);
+
                 cnt.put(c, lastTotal + x.getCnt());
             });
         return cnt;

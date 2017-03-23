@@ -161,7 +161,7 @@ public class Console {
         System.out.println("sc. Search");
         System.out.println();
 
-        System.out.println("CLIENTS");
+        System.out.println("ORDERS");
         System.out.println("-------");
         System.out.println("9.  Print all");
         System.out.println("10. Add");
@@ -171,7 +171,7 @@ public class Console {
 
         System.out.println("MISCELLANEOUS");
         System.out.println("-------");
-        System.out.println("13. Sort Clients by total Books");
+        System.out.println("13. Sort clients by number of ordered books");
 
         System.out.println("x. Exit");
     }
