@@ -7,6 +7,7 @@ import repository.Repository;
 import repository.XmlRepository;
 import repository.BookDatabaseRepository;
 import repository.ClientDatabaseRepository;
+import repository.OrderDatabaseRepository;
 import service.BookService;
 import service.ClientService;
 import service.OrderService;
@@ -20,11 +21,10 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        // in memory repo
-        Validator<Book> bookValidator = new BookValidator();
+        Validator<Book>   bookValidator   = new BookValidator();
         Validator<Client> clientValidator = new ClientValidator();
         Validator<Order> orderValidator = new OrderValidator();
-/*        Repository<Integer, Book> bookRepository = new BookDatabaseRepository(
+        Repository<Integer, Book> bookRepository = new BookDatabaseRepository(
                 bookValidator,
                 "jdbc:postgresql://localhost:5432/mpp",
                 "sergiu",
@@ -33,14 +33,17 @@ public class Main {
                 clientValidator,
                 "jdbc:postgresql://localhost:5432/mpp",
                 "sergiu",
-                "asdf1234");*/
-        Repository<Integer, Book> bookRepository = new XmlRepository<>(bookValidator, "./data/books.xml");
-        Repository<Integer, Client> clientRepository = new XmlRepository<>(clientValidator, "./data/clients.xml");
-        Repository<Integer, Order> orderRepository = new XmlRepository<>(orderValidator, "./data/orders.xml");
+                "asdf1234");
+        Repository<Integer, Order> orderRepository = new OrderDatabaseRepository(
+                orderValidator,
+                "jdbc:postgresql://localhost:5432/mpp",
+                "sergiu",
+                "asdf1234");
 
         BookService bookService = new BookService(bookRepository);
         ClientService clientService = new ClientService(clientRepository);
         OrderService orderService = new OrderService(orderRepository, bookService, clientService);
+
         Console console = new Console(bookService, clientService, orderService);
         console.run();
     }
