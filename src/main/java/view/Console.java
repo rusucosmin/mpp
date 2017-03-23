@@ -8,6 +8,7 @@ import model.validators.ValidatorException;
 
 import service.BookService;
 import service.ClientService;
+import service.OrderService;
 
 
 import java.util.HashMap;
@@ -24,8 +25,9 @@ public class Console {
      * Console - class that executes the commands that the user dictates
      * @param bookService - to handle book operations
      * @param clientService - to handle client operations
+     * @param orderService
      */
-    public Console(BookService bookService, ClientService clientService) {
+    public Console(BookService bookService, ClientService clientService, OrderService orderService) {
         this.bookService = bookService;
         this.clientService = clientService;
         this.stdin = new Scanner(System.in);

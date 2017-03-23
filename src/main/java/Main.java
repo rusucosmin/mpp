@@ -1,10 +1,7 @@
 import model.Book;
 import model.Client;
 import model.Order;
-import model.validators.BookValidator;
-import model.validators.ClientValidator;
-import model.validators.Validator;
-import model.validators.ValidatorException;
+import model.validators.*;
 import repository.InMemoryRepository;
 import repository.Repository;
 import repository.XmlRepository;
@@ -26,7 +23,8 @@ public class Main {
         // in memory repo
         Validator<Book> bookValidator = new BookValidator();
         Validator<Client> clientValidator = new ClientValidator();
-        Repository<Integer, Book> bookRepository = new BookDatabaseRepository(
+        Validator<Order> orderValidator = new OrderValidator();
+/*        Repository<Integer, Book> bookRepository = new BookDatabaseRepository(
                 bookValidator,
                 "jdbc:postgresql://localhost:5432/mpp",
                 "sergiu",
@@ -35,10 +33,15 @@ public class Main {
                 clientValidator,
                 "jdbc:postgresql://localhost:5432/mpp",
                 "sergiu",
-                "asdf1234");
+                "asdf1234");*/
+        Repository<Integer, Book> bookRepository = new XmlRepository<>(bookValidator, "./data/books.xml");
+        Repository<Integer, Client> clientRepository = new XmlRepository<>(clientValidator, "./data/clients.xml");
+        Repository<Integer, Order> orderRepository = new XmlRepository<>(orderValidator, "./data/orders.xml");
+
         BookService bookService = new BookService(bookRepository);
         ClientService clientService = new ClientService(clientRepository);
-        Console console = new Console(bookService, clientService);
+        OrderService orderService = new OrderService(orderRepository, bookService, clientService);
+        Console console = new Console(bookService, clientService, orderService);
         console.run();
     }
 }
