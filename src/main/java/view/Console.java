@@ -151,6 +151,7 @@ public class Console {
         System.out.println("2. Add");
         System.out.println("3. Update");
         System.out.println("4. Delete");
+        System.out.println("sb. Search");
         System.out.println();
 
         System.out.println("CLIENTS");
@@ -159,6 +160,7 @@ public class Console {
         System.out.println("6. Add");
         System.out.println("7. Update");
         System.out.println("8. Delete");
+        System.out.println("sc. Search");
         System.out.println();
 
         System.out.println("CLIENTS");
@@ -196,6 +198,10 @@ public class Console {
                 System.out.println("command: delete book");
                 this.deleteBook();
                 break;
+            case "sb":
+                System.out.println("command: search book");
+                this.searchBook();
+                break;
             case "5":
                 System.out.println("command: print all clients");
                 this.printAllClients();
@@ -211,6 +217,10 @@ public class Console {
             case "8":
                 System.out.println("command: delete client");
                 this.deleteClient();
+                break;
+            case "sc":
+                System.out.println("command: search client");
+                this.searchClient();
                 break;
             case "9":
                 System.out.println("command: print all orders");
@@ -263,7 +273,6 @@ public class Console {
         else
             System.out.println("Order ID not present");
     }
-
 
     private void updateBook() {
         int id = this.readInt("Book ID: ", "Book ID must be an integer");
@@ -324,6 +333,25 @@ public class Console {
         else {
             System.out.println("Order ID not present");
         }
+    }
+
+    private void searchBook() {
+        String searchTerm = this.readString("Search term: ");
+
+        StreamSupport.stream(this.bookService.readAll().spliterator(), false)
+            .filter(x -> x.getTitle().contains(searchTerm) ||
+                         x.getAuthor().contains(searchTerm))
+            .forEach(x -> System.out.println(x));
+    }
+
+    private void searchClient() {
+        String searchTerm = this.readString("Search term: ");
+
+        StreamSupport.stream(this.clientService.readAll().spliterator(), false)
+            .filter(x -> x.getName().contains(searchTerm) ||
+                         x.getAddress().contains(searchTerm) ||
+                         x.getEmail().contains(searchTerm))
+            .forEach(x -> System.out.println(x));
     }
 
     /**
