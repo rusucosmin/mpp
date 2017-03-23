@@ -83,7 +83,10 @@ public class Console {
      */
     public String readString(String prompt) {
         System.out.print(prompt);
-        return this.stdin.nextLine();
+        String ret = this.stdin.nextLine();
+
+        System.out.println();
+        return ret;
     }
 
 
@@ -180,8 +183,7 @@ public class Console {
      * Method read and process command
      */
     public void readAndProcessCommand() {
-        System.out.print("> ");
-        String commandID = this.stdin.nextLine();
+        String commandID = this.readString("> ");
 
         switch(commandID) {
             case "1":
