@@ -2,13 +2,14 @@ package view;
 
 import model.Book;
 import model.Client;
+import model.Order;
 import model.validators.BookException;
 import model.validators.ClientException;
 import model.validators.ValidatorException;
 
 import service.BookService;
 import service.ClientService;
-
+import service.OrderService;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -18,16 +19,19 @@ import java.util.stream.*;
 public class Console {
     private BookService bookService;
     private ClientService clientService;
+    private OrderService orderService;
     private Scanner stdin;
 
     /**
      * Console - class that executes the commands that the user dictates
      * @param bookService - to handle book operations
      * @param clientService - to handle client operations
+     * @param orderService - to handle order operations
      */
-    public Console(BookService bookService, ClientService clientService) {
+    public Console(BookService bookService, ClientService clientService, OrderService orderService) {
         this.bookService = bookService;
         this.clientService = clientService;
+        this.orderService = orderService;
         this.stdin = new Scanner(System.in);
     }
 
@@ -44,6 +48,14 @@ public class Console {
      */
     public void printAllClients() {
         StreamSupport.stream(this.clientService.readAll().spliterator(), false)
+                     .forEach(x -> System.out.println(x));
+    }
+
+    /**
+     *  Method prints all the available orders
+     */
+    public void printAllOrders() {
+        StreamSupport.stream(this.orderService.readAll().spliterator(), false)
                      .forEach(x -> System.out.println(x));
     }
 
@@ -113,6 +125,23 @@ public class Console {
     }
 
     /**
+     * Method adds a new order from the user
+     */
+    public void addOrder() {
+        // int id = this.readInt("Client ID: ", "Client ID must be an integer");
+        int clientID = this.readInt("Client ID: ", "Client ID must be an integer");
+        int bookID = this.readInt("Book ID: ", "Book ID must be an integer");
+        int cnt = this.readInt("Quantity: ", "Quantity must be an integer");
+
+        try {
+            Order x = new Order(clientID, bookID, cnt);
+            this.orderService.create(x);
+        } catch(ValidatorException e) {
+            e.printStackTrace(System.out);
+        }
+    }
+
+    /**
      * Method shows the main menu
      */
     public void showMenu() {
@@ -130,8 +159,16 @@ public class Console {
         System.out.println("6. Add");
         System.out.println("7. Update");
         System.out.println("8. Delete");
-
         System.out.println();
+
+        System.out.println("CLIENTS");
+        System.out.println("-------");
+        System.out.println("9.  Print all");
+        System.out.println("10. Add");
+        System.out.println("11. Update");
+        System.out.println("12. Delete");
+        System.out.println();
+
         System.out.println("x. Exit");
     }
 
@@ -175,6 +212,22 @@ public class Console {
                 System.out.println("command: delete client");
                 this.deleteClient();
                 break;
+            case "9":
+                System.out.println("command: print all orders");
+                this.printAllOrders();
+                break;
+            case "10":
+                System.out.println("command: add order");
+                this.addOrder();
+                break;
+            case "11":
+                System.out.println("command: update order");
+                this.updateOrder();
+                break;
+            case "12":
+                System.out.println("command: delete order");
+                this.deleteOrder();
+                break;
             case "x":
                 System.exit(0);
                 break;
@@ -201,6 +254,16 @@ public class Console {
         else
             System.out.println("Client ID not present");
     }
+
+    private void deleteOrder() {
+        int orderID = this.readInt("Order ID: ", "Order ID must be an integer");
+        Optional<Order> opt = this.orderService.delete(orderID);
+        if(opt.isPresent())
+            System.out.println("Successfully removed Order:\n" + opt.get().toString());
+        else
+            System.out.println("Order ID not present");
+    }
+
 
     private void updateBook() {
         int id = this.readInt("Book ID: ", "Book ID must be an integer");
@@ -239,6 +302,27 @@ public class Console {
         }
         else {
             System.out.println("Client ID not present");
+        }
+    }
+
+    private void updateOrder() {
+        int orderID = this.readInt("Order ID: ", "Order ID must be an integer");
+        Optional<Order> opt = this.orderService.read(orderID);
+        if(opt.isPresent()) {
+
+            int clientID = this.readInt("Client ID: ", "Client ID must be an integer");
+            int bookID = this.readInt("Book ID: ", "Book ID must be an integer");
+            int cnt = this.readInt("Quantity: ", "Quantity must be an integer");
+
+            try {
+                Order x = new Order(orderID, clientID, bookID, cnt);
+                this.orderService.update(x);
+            } catch(ClientException e) {
+                e.printStackTrace(System.out);
+            }
+        }
+        else {
+            System.out.println("Order ID not present");
         }
     }
 

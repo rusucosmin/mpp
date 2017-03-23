@@ -4,17 +4,26 @@ package model;
  * Class to store an Order (that is a client-book pair)
  */
 public class Order extends BaseEntity<Integer> {
+    private static int nextID = 0;
     private Integer clientID;
     private Integer bookID;
     int cnt;
 
     public Order(Integer clientID, Integer bookID, Integer cnt) {
+        this.setID(Order.nextID++);
         this.clientID = clientID;
         this.bookID = bookID;
         this.cnt = cnt;
     }
 
-    /*Getters and setters*/
+    public Order(Integer orderID, Integer clientID, Integer bookID, Integer cnt) {
+        this.setID(orderID);
+        this.clientID = clientID;
+        this.bookID = bookID;
+        this.cnt = cnt;
+    }
+
+
     public Integer getClientID() {
         return clientID;
     }
