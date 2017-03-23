@@ -7,6 +7,7 @@ import org.xml.sax.SAXException;
 import util.XmlReader;
 import util.XmlWriter;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.text.html.Option;
 import javax.swing.text.html.parser.Entity;
 import javax.xml.parsers.ParserConfigurationException;
@@ -50,9 +51,11 @@ public class XmlRepository<ID, T extends BaseEntity<ID>> extends InMemoryReposit
     }
 
     private void loadData() throws SAXException, IllegalAccessException, IOException, NoSuchFieldException, InstantiationException, ParserConfigurationException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
+        System.out.println("loading file..");
         List<T> data = new XmlReader<ID, T>(this.fileName).loadEntities();
         for(T el : data) {
             try {
+                System.out.println("saving: " + el.toString());
                 super.save(el);
             } catch(ValidatorException e) {
                 e.printStackTrace();

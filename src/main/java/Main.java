@@ -13,8 +13,6 @@ import service.ClientService;
 import service.OrderService;
 import view.Console;
 
-import javax.swing.text.html.parser.Entity;
-
 public class Main {
     /**
      * Main class to configure and run the application
@@ -43,6 +41,10 @@ public class Main {
         bookRepository = new XmlRepository<>(bookValidator, "./data/books.xml");
         clientRepository = new XmlRepository<>(clientValidator, "./data/clients.xml");
         orderRepository = new XmlRepository<>(orderValidator, "./data/orders.xml");
+
+//        bookRepository = new InMemoryRepository<>(bookValidator);
+//        clientRepository = new InMemoryRepository<>(clientValidator);
+//        orderRepository = new InMemoryRepository<>(orderValidator);
 
         BookService bookService = new BookService(bookRepository);
         ClientService clientService = new ClientService(clientRepository);
