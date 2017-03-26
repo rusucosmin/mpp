@@ -61,7 +61,7 @@ public class XmlReader<ID, T extends BaseEntity<ID>> {
         String id = ((Element) node).getAttribute("id");
 
         idField.setAccessible(true);
-        idField.set(entity, id);
+        idField.set(entity, new Integer(id));
 
         for(Field f : entityClass.getDeclaredFields()) {
             f.setAccessible(true);

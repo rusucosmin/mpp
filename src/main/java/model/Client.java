@@ -1,5 +1,9 @@
 package model;
 
+import org.omg.PortableServer.SERVANT_RETENTION_POLICY_ID;
+
+import java.io.Serializable;
+
 /**
  * Client Class to represent a Client
  */

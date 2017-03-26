@@ -2,12 +2,7 @@ import model.Book;
 import model.Client;
 import model.Order;
 import model.validators.*;
-import repository.InMemoryRepository;
-import repository.Repository;
-import repository.XmlRepository;
-import repository.BookDatabaseRepository;
-import repository.ClientDatabaseRepository;
-import repository.OrderDatabaseRepository;
+import repository.*;
 import service.BookService;
 import service.ClientService;
 import service.OrderService;
@@ -45,6 +40,10 @@ public class Main {
 //        bookRepository = new InMemoryRepository<>(bookValidator);
 //        clientRepository = new InMemoryRepository<>(clientValidator);
 //        orderRepository = new InMemoryRepository<>(orderValidator);
+
+        bookRepository = new FileRepository<>(bookValidator, "./data/books.file");
+        clientRepository = new FileRepository<>(clientValidator, "./data/clients.file");
+        orderRepository = new FileRepository<>(orderValidator, "./data/orders.file");
 
         BookService bookService = new BookService(bookRepository);
         ClientService clientService = new ClientService(clientRepository);

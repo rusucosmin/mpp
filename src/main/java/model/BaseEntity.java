@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * BaseEntity - class with a unique id field
  * @param <ID> = type of the ID
  */
-public class BaseEntity<ID> {
+public class BaseEntity<ID> implements Serializable {
     private ID id;
 
     /**
