@@ -19,37 +19,42 @@ public class Main {
         Validator<Order> orderValidator = new OrderValidator();
         Repository<Integer, Book> bookRepository = new BookDatabaseRepository(
                 bookValidator,
-                "jdbc:postgresql://localhost:5432/mpp",
-                "sergiu",
+                "jdbc:postgresql://sergiu.ml:5432/mpp",
+                "cosmin",
                 "asdf1234");
+        /*
         Repository<Integer, Client> clientRepository = new ClientDatabaseRepository(
                 clientValidator,
-                "jdbc:postgresql://localhost:5432/mpp",
-                "sergiu",
+                "jdbc:postgresql://sergiu.ml:5432/mpp",
+                "cosmin",
                 "asdf1234");
         Repository<Integer, Order> orderRepository = new OrderDatabaseRepository(
                 orderValidator,
-                "jdbc:postgresql://localhost:5432/mpp",
-                "sergiu",
+                "jdbc:postgresql://sergiu.ml:5432/mpp",
+                "cosmin",
                 "asdf1234");
+                */
 
-        bookRepository = new XmlRepository<>(bookValidator, "./data/books.xml");
-        clientRepository = new XmlRepository<>(clientValidator, "./data/clients.xml");
-        orderRepository = new XmlRepository<>(orderValidator, "./data/orders.xml");
+        ///xml repo
+//        bookRepository = new XmlRepository<>(bookValidator, "./data/books.xml");
+//        clientRepository = new XmlRepository<>(clientValidator, "./data/clients.xml");
+//        orderRepository = new XmlRepository<>(orderValidator, "./data/orders.xml");
 
+        ///in memory repo
 //        bookRepository = new InMemoryRepository<>(bookValidator);
 //        clientRepository = new InMemoryRepository<>(clientValidator);
 //        orderRepository = new InMemoryRepository<>(orderValidator);
 
-        bookRepository = new FileRepository<>(bookValidator, "./data/books.file");
-        clientRepository = new FileRepository<>(clientValidator, "./data/clients.file");
-        orderRepository = new FileRepository<>(orderValidator, "./data/orders.file");
+        //file repo
+//        bookRepository = new FileRepository<>(bookValidator, "./data/books.file");
+//        clientRepository = new FileRepository<>(clientValidator, "./data/clients.file");
+//        orderRepository = new FileRepository<>(orderValidator, "./data/orders.file");
 
         BookService bookService = new BookService(bookRepository);
-        ClientService clientService = new ClientService(clientRepository);
-        OrderService orderService = new OrderService(orderRepository, bookService, clientService);
+//        ClientService clientService = new ClientService(clientRepository);
+//        OrderService orderService = new OrderService(orderRepository, bookService, clientService);
 
-        Console console = new Console(bookService, clientService, orderService);
-        console.run();
+//        Console console = new Console(bookService, clientService, orderService);
+//        console.run();
     }
 }
