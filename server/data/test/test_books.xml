@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<books>
+    <ro.ubb.bookstore.server.model.Book id="1">
+        <title>Mark Manson</title>
+        <author>Models</author>
+        <year>2010</year>
+        <cnt>69</cnt>
+    </ro.ubb.bookstore.server.model.Book>
+    <ro.ubb.bookstore.server.model.Book id="2">
+        <title>The Game</title>
+        <author>Neil Strauss</author>
+        <year>2008</year>
+        <cnt>100</cnt>
+    </ro.ubb.bookstore.server.model.Book>
+    <ro.ubb.bookstore.server.model.Book id="3">
+        <title>Neil Strauss</title>
+        <author>The Truth</author>
+        <year>2016</year>
+        <cnt>2</cnt>
+    </ro.ubb.bookstore.server.model.Book>
+</books>
