@@ -1,24 +1,22 @@
 package ro.ubb.bookstore.client.view;
 
+import ro.ubb.bookstore.common.model.BaseEntity;
 import ro.ubb.bookstore.common.model.Book;
 import ro.ubb.bookstore.common.model.Client;
 import ro.ubb.bookstore.common.model.Order;
-import ro.ubb.bookstore.common.model.validators.BookException;
-import ro.ubb.bookstore.common.model.validators.ClientException;
-import ro.ubb.bookstore.common.model.validators.ValidatorException;
-
 import ro.ubb.bookstore.common.service.IBookService;
-//import ro.ubb.bookstore.server.service.IClientService;
-//import ro.ubb.bookstore.server.service.IOrderService;
+import ro.ubb.bookstore.common.service.IClientService;
+import ro.ubb.bookstore.common.service.IOrderService;
 
-import java.util.*;
+import java.util.Optional;
+import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.*;
+import java.util.stream.StreamSupport;
 
 public class Console {
     private IBookService bookService;
-//    private ClientService clientService;
-//    private OrderService orderService;
+    private IClientService clientService;
+    private IOrderService orderService;
     private Scanner stdin;
 
     /**
@@ -27,47 +25,55 @@ public class Console {
      * @param clientService - to handle client operations
      * @param orderService - to handle order operations
      */
-//    public Console(BookService bookService, ClientService clientService, OrderService orderService) {
-    public Console(IBookService bookService) {
+    public Console(IBookService bookService, IClientService clientService, IOrderService orderService) {
         this.bookService = bookService;
-//        this.clientService = clientService;
-//        this.orderService = orderService;
+        this.clientService = clientService;
+        this.orderService = orderService;
         this.stdin = new Scanner(System.in);
     }
+
+    private void waitForFuture(CompletableFuture t) throws InterruptedException {
+        System.out.println("Waiting for response...");
+        while (!t.isDone()) {
+            Thread.sleep(2);
+        }
+    }
+
+    private <ID, T extends BaseEntity<ID>> void print(CompletableFuture<Iterable<T>> future) {
+        try {
+            this.waitForFuture(future);
+            Iterable<T> iter = future.get();
+            StreamSupport.stream(iter.spliterator(), false)
+                    .forEach(x -> System.out.println(x));
+        } catch(Exception e) {
+            System.out.println("There was an exception while getting all the entities");
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      *  Method prints all the available books
      */
     public void printAllBooks() {
-        try {
-            CompletableFuture<Iterable<Book>> future = this.bookService.readAll();
-            System.out.println("Waiting");
-            while(!future.isDone()) {
-                System.out.println(".");
-                Thread.sleep(2);
-            }
-            Iterable<Book> iter = future.get();
-            StreamSupport.stream(iter.spliterator(), false)
-                    .forEach(x -> System.out.println(x));
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        CompletableFuture<Iterable<Book>> future = this.bookService.readAll();
+        this.print(future);
     }
 
     /**
      *  Method prints all the available clients
      */
     public void printAllClients() {
-//        StreamSupport.stream(this.clientService.readAll().spliterator(), false)
-//                     .forEach(x -> System.out.println(x));
+        CompletableFuture<Iterable<Client>> future = this.clientService.readAll();
+        this.print(future);
     }
 
     /**
      *  Method prints all the available orders
      */
     public void printAllOrders() {
-//        StreamSupport.stream(this.orderService.readAll().spliterator(), false)
-//                     .forEach(x -> System.out.println(x));
+        CompletableFuture<Iterable<Order>> future = this.orderService.readAll();
+        this.print(future);
     }
 
     /**
@@ -102,6 +108,19 @@ public class Console {
         return ret;
     }
 
+    private<ID, T extends BaseEntity<ID>> void handleSave(CompletableFuture<Optional<T>> future) {
+        try {
+            this.waitForFuture(future);
+            Optional<T> opt = future.get();
+            if(opt.isPresent())
+                System.out.println("There is already an entity with the same id: " + opt.get().toString());
+            else
+                System.out.println("Successfully added");
+        } catch(Exception e) {
+            System.out.println("Error while saving entity");
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Method to add a new book from the user
@@ -113,63 +132,37 @@ public class Console {
         int year = this.readInt("Year: ", "Publish year must be an integer");
         int cnt = this.readInt("Quantity: ", "Book quantity must be an integer");
 
-        try {
-            Book b = new Book(id, author, title, year, cnt);
-            CompletableFuture<Optional<Book>> future = bookService.create(b);
-            System.out.print("Waiting");
-            while(!future.isDone()) {
-                System.out.print(".");
-                Thread.sleep(2);
-            }
-            System.out.println("");
-            Optional<Book> opt = future.get();
-            if(opt.isPresent())
-                System.out.println("A book with the same ID is already present: " + opt.get().toString());
-            else
-                System.out.println("Successfully saved book: " + b.toString());
-        } catch(ValidatorException e) {
-            e.printStackTrace(System.out);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
+        Book book = new Book(id, author, title, year, cnt);
+        CompletableFuture<Optional<Book>> future = bookService.create(book);
+        this.handleSave(future);
     }
 
     /**
      * Method adds a new client from the user
      */
     public void addClient() {
-    /*
         int id = this.readInt("Client ID: ", "Client ID must be an integer");
         String name = this.readString("Name: ");
         String email = this.readString("Email: ");
         String address = this.readString("Address: ");
 
-        try {
-            Client c = new Client(id, name, email, address);
-            this.clientService.create(c);
-        } catch(ValidatorException e) {
-            e.printStackTrace(System.out);
-        }
-    */
+        Client client = new Client(id, name, email, address);
+        CompletableFuture<Optional<Client>> future = clientService.create(client);
+        this.handleSave(future);
     }
 
     /**
      * Method adds a new order from the user
      */
     public void addOrder() {
-    /*
-        // int id = this.readInt("Client ID: ", "Client ID must be an integer");
+        int id = this.readInt("Order ID: ", "Order ID must be an integer");
         int clientID = this.readInt("Client ID: ", "Client ID must be an integer");
         int bookID = this.readInt("Book ID: ", "Book ID must be an integer");
         int cnt = this.readInt("Quantity: ", "Quantity must be an integer");
 
-        try {
-            Order x = new Order(clientID, bookID, cnt);
-            this.orderService.create(x);
-        } catch(ValidatorException e) {
-            e.printStackTrace(System.out);
-        }
-    */
+        Order order = new Order(id, clientID, bookID, cnt);
+        CompletableFuture<Optional<Order>> future = this.orderService.create(order);
+        this.handleSave(future);
     }
 
     /**
@@ -293,128 +286,118 @@ public class Console {
         */
     }
 
+    private <ID, T extends BaseEntity<ID>> void handleDelete(CompletableFuture<Optional<T>> future) {
+        try {
+            this.waitForFuture(future);
+            Optional<T> opt = future.get();
+            if(opt.isPresent())
+                System.out.println("Successfully deleted item: " + opt.get().toString());
+            else
+                System.out.println("No such item.");
+        }catch(Exception e) {
+            System.out.println("There was an error while trying to delete an entity");
+            e.printStackTrace();
+        }
+    }
 
     private void deleteBook() {
-        /*
         int id = this.readInt("Book ID: ", "Book ID must be an integer");
-        Optional<Book> opt = this.bookService.delete(id);
-        if(opt.isPresent())
-            System.out.println("Successfully removed Book:\n" + opt.get().toString());
-        else
-            System.out.println("Book ID not present");
-            */
+        CompletableFuture<Optional<Book>> future = this.bookService.delete(id);
+        this.handleDelete(future);
     }
 
     private void deleteClient() {
-        /*
         int id = this.readInt("Client ID: ", "Client ID must be an integer");
-        Optional<Client> opt = this.clientService.delete(id);
-        if(opt.isPresent())
-            System.out.println("Successfully removed Client:\n" + opt.get().toString());
-        else
-            System.out.println("Client ID not present");
-            */
+        CompletableFuture<Optional<Client>> future = this.clientService.delete(id);
+        this.handleDelete(future);
     }
 
     private void deleteOrder() {
-        /*
         int orderID = this.readInt("Order ID: ", "Order ID must be an integer");
-        Optional<Order> opt = this.orderService.delete(orderID);
-        if(opt.isPresent())
-            System.out.println("Successfully removed Order:\n" + opt.get().toString());
-        else
-            System.out.println("Order ID not present");
-            */
+        CompletableFuture<Optional<Order>> future = this.orderService.delete(orderID);
+        this.handleDelete(future);
+    }
+
+    // @return an {@code Optional} - null if the entity was updated otherwise (e.g. id does not exist) returns the
+    private <T extends BaseEntity<Integer>> void handleUpdate(CompletableFuture<Optional<T>> future) {
+        try {
+            this.waitForFuture(future);
+            Optional<T> opt = future.get();
+            if(!opt.isPresent())
+                System.out.println("Successfully updated item.");
+            else
+                System.out.println("No such item " + opt.get().toString());
+        } catch(Exception e) {
+            System.out.println("There was an error while updating the entity");
+            e.printStackTrace();
+        }
     }
 
     private void updateBook() {
-        /*
         int id = this.readInt("Book ID: ", "Book ID must be an integer");
-        Optional<Book> opt = this.bookService.read(id);
-        if(opt.isPresent()) {
-            String author = this.readString("Author: ");
-            String title = this.readString("Title: ");
-            int year = this.readInt("Year: ", "Publish year must be an integer");
-            int cnt = this.readInt("Quantity: ", "Book quantity must be an integer");
-            try {
-                Book b = new Book(id, author, title, year, cnt);
-                this.bookService.update(b);
-            } catch(BookException e) {
-                e.printStackTrace(System.out);
-            }
-        }
-        else {
-            System.out.println("Book ID not present");
-        }
-        */
+        String author = this.readString("Author: ");
+        String title = this.readString("Title: ");
+        int year = this.readInt("Year: ", "Publish year must be an integer");
+        int cnt = this.readInt("Quantity: ", "Book quantity must be an integer");
+        Book b = new Book(id, author, title, year, cnt);
+        CompletableFuture<Optional<Book>> future = bookService.update(b);
+        this.handleUpdate(future);
     }
 
     private void updateClient() {
-        /*
         int id = this.readInt("Client ID: ", "Client ID must be an integer");
-        Optional<Client> opt = this.clientService.read(id);
-        if(opt.isPresent()) {
-            String name = this.readString("Name: ");
-            String email = this.readString("Email: ");
-            String address = this.readString("Address: ");
+        String name = this.readString("Name: ");
+        String email = this.readString("Email: ");
+        String address = this.readString("Address: ");
 
-            try {
-                Client c = new Client(id, name, email, address);
-                this.clientService.update(c);
-            } catch(ClientException e) {
-                e.printStackTrace(System.out);
-            }
-        }
-        else {
-            System.out.println("Client ID not present");
-        }
-        */
+        Client c = new Client(id, name, email, address);
+        CompletableFuture<Optional<Client>> future = clientService.update(c);
+        this.handleUpdate(future);
     }
 
     private void updateOrder() {
-        /*
         int orderID = this.readInt("Order ID: ", "Order ID must be an integer");
-        Optional<Order> opt = this.orderService.read(orderID);
-        if(opt.isPresent()) {
+        int clientID = this.readInt("Client ID: ", "Client ID must be an integer");
+        int bookID = this.readInt("Book ID: ", "Book ID must be an integer");
+        int cnt = this.readInt("Quantity: ", "Quantity must be an integer");
 
-            int clientID = this.readInt("Client ID: ", "Client ID must be an integer");
-            int bookID = this.readInt("Book ID: ", "Book ID must be an integer");
-            int cnt = this.readInt("Quantity: ", "Quantity must be an integer");
-
-            try {
-                Order x = new Order(orderID, clientID, bookID, cnt);
-                this.orderService.update(x);
-            } catch(ClientException e) {
-                e.printStackTrace(System.out);
-            }
-        }
-        else {
-            System.out.println("Order ID not present");
-        }
-        */
+        Order x = new Order(orderID, clientID, bookID, cnt);
+        CompletableFuture<Optional<Order>> future = orderService.update(x);
+        this.handleUpdate(future);
     }
 
     private void searchBook() {
-        /*
         String searchTerm = this.readString("Search term: ");
-
-        StreamSupport.stream(this.bookService.readAll().spliterator(), false)
-            .filter(x -> x.getTitle().contains(searchTerm) ||
-                         x.getAuthor().contains(searchTerm))
-            .forEach(x -> System.out.println(x));
-            */
+        CompletableFuture<Iterable<Book>> future = this.bookService.readAll();
+        future.thenAccept((iterable) -> {
+            StreamSupport.stream(iterable.spliterator(), false)
+                .filter(x -> x.getTitle().contains(searchTerm) ||
+                             x.getAuthor().contains(searchTerm))
+                .forEach(x -> System.out.println(x));
+        });
+        try {
+            this.waitForFuture(future);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void searchClient() {
-        /*
         String searchTerm = this.readString("Search term: ");
 
-        StreamSupport.stream(this.clientService.readAll().spliterator(), false)
-            .filter(x -> x.getName().contains(searchTerm) ||
+        CompletableFuture<Iterable<Client>> future = this.clientService.readAll();
+        future.thenAccept((iterable) -> {
+        StreamSupport.stream(iterable.spliterator(), false)
+                .filter(x -> x.getName().contains(searchTerm) ||
                          x.getAddress().contains(searchTerm) ||
                          x.getEmail().contains(searchTerm))
-            .forEach(x -> System.out.println(x));
-            */
+                .forEach(x -> System.out.println(x));
+        });
+        try {
+            this.waitForFuture(future);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

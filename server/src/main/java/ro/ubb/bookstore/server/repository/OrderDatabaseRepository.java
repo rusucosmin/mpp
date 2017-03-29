@@ -14,8 +14,6 @@ import java.sql.*;
 
 /**
  * DatabaseRepository implementation for the Repository
- * @param <ID>
- * @param <T>
  */
 public class OrderDatabaseRepository extends DatabaseConnection implements Repository<Integer, Order> {
     Validator<Order> validator;
@@ -95,10 +93,13 @@ public class OrderDatabaseRepository extends DatabaseConnection implements Repos
         String query = "INSERT INTO orders (id, clientID, bookID, cnt) " +
             String.format("VALUES (%d, %d, %d, %d);", x.getID(), x.getClientID(), x.getBookID(), x.getCnt());
 
+        Optional<Order> opt = findOne(x.getID());
+        if(opt.isPresent())
+            return opt;
+
         executeUpdate(query);
 
-        // TODO: make sure this is what I want to return
-        return Optional.ofNullable(x);
+        return Optional.empty();
     }
 
     /**
@@ -113,6 +114,9 @@ public class OrderDatabaseRepository extends DatabaseConnection implements Repos
         }
 
         Optional<Order> ret = findOne(id);
+
+        if(!ret.isPresent())
+            return null;
 
         String query = "DELETE FROM orders WHERE id='" + id.toString() + "';";
         executeUpdate(query);
@@ -133,11 +137,15 @@ public class OrderDatabaseRepository extends DatabaseConnection implements Repos
 
         validator.validate(x);
 
+        Optional<Order> ret = findOne(x.getID());
+
+        if(!ret.isPresent())
+            return Optional.ofNullable(x);
+
         String query = String.format("UPDATE orders SET id='%d', clientID='%d', bookID='%d', cnt='%d' WHERE id='%d';", x.getID(), x.getClientID(), x.getBookID(), x.getCnt(), x.getID());
 
         executeUpdate(query);
 
-        // TODO: make sure this is what I want to return
-        return Optional.ofNullable(x);
+        return Optional.empty();
     }
 }

@@ -1,21 +1,16 @@
 package ro.ubb.bookstore.server.repository;
 
-import ro.ubb.bookstore.common.model.BaseEntity;
 import ro.ubb.bookstore.common.model.Book;
-import ro.ubb.bookstore.common.model.Client;
 import ro.ubb.bookstore.common.model.validators.Validator;
 import ro.ubb.bookstore.common.model.validators.ValidatorException;
 
-import java.util.Optional;
-import java.util.List;
+import java.sql.ResultSet;
 import java.util.ArrayList;
-
-import java.sql.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * DatabaseRepository implementation for the Repository
- * @param <ID>
- * @param <T>
  */
 public class BookDatabaseRepository extends DatabaseConnection implements Repository<Integer, Book> {
     Validator<Book> validator;
@@ -83,7 +78,7 @@ public class BookDatabaseRepository extends DatabaseConnection implements Reposi
 
     /**
      * Method creates a new record
-     * @param entity
+     * @param b
      *            must not be null.
      * @return
      * @throws ValidatorException
@@ -97,10 +92,13 @@ public class BookDatabaseRepository extends DatabaseConnection implements Reposi
         String query = "INSERT INTO books (id, title, author, year, cnt) " +
             String.format("VALUES (%d, '%s', '%s', %d, %d);", b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt());
 
+        Optional<Book> optBook = findOne(b.getID());
+        if(optBook.isPresent()) ///the book is already present
+            return optBook;
+
         executeUpdate(query);
 
-        // TODO: make sure this is what I want to return
-        return Optional.ofNullable(b);
+        return Optional.empty();
     }
 
     /**
@@ -116,6 +114,9 @@ public class BookDatabaseRepository extends DatabaseConnection implements Reposi
 
         Optional<Book> ret = findOne(id);
 
+        if(!ret.isPresent())
+            return null;
+
         String query = "DELETE FROM books WHERE id='" + id.toString() + "';";
         executeUpdate(query);
 
@@ -124,8 +125,6 @@ public class BookDatabaseRepository extends DatabaseConnection implements Reposi
 
     /**
      * Method updates a record
-     * @param entity
-     *            must not be null.
      * @return
      * @throws ValidatorException
      */
@@ -135,11 +134,15 @@ public class BookDatabaseRepository extends DatabaseConnection implements Reposi
 
         validator.validate(b);
 
+        Optional<Book> ret = findOne(b.getID());
+
+        if(!ret.isPresent())
+            return Optional.ofNullable(b);
+
         String query = String.format("UPDATE books SET id='%d', title='%s', author='%s', year='%d', cnt='%d' WHERE id='%d';", b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt(), b.getID());
 
         executeUpdate(query);
 
-        // TODO: make sure this is what I want to return
-        return Optional.ofNullable(b);
+        return Optional.empty();
     }
 }

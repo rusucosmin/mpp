@@ -9,13 +9,6 @@ public class Order extends BaseEntity<Integer> {
     private Integer bookID;
     int cnt;
 
-    public Order(Integer clientID, Integer bookID, Integer cnt) {
-        this.setID(Order.nextID++);
-        this.clientID = clientID;
-        this.bookID = bookID;
-        this.cnt = cnt;
-    }
-
     public Order(Integer orderID, Integer clientID, Integer bookID, Integer cnt) {
         this.setID(orderID);
         this.clientID = clientID;

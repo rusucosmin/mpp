@@ -1,29 +1,20 @@
-package ro.ubb.bookstore.client;
+package ro.ubb.bookstore.client.service;
 
 import ro.ubb.bookstore.client.tcp.TcpClient;
 import ro.ubb.bookstore.common.model.Book;
-import ro.ubb.bookstore.common.model.Message;
-import ro.ubb.bookstore.common.model.validators.BookStoreException;
-import ro.ubb.bookstore.common.model.validators.ValidatorException;
 import ro.ubb.bookstore.common.service.IBookService;
-import ro.ubb.bookstore.common.utils.StringSerialize;
 
-import java.io.IOException;
-import java.security.cert.PKIXRevocationChecker;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
-public class BookServiceClient implements IBookService {
+public class BookServiceClient extends CRUDServiceClient<Integer, Book> implements IBookService {
     private ExecutorService executorService;
     private TcpClient tcpClient;
 
     public BookServiceClient(ExecutorService executorService, TcpClient tcpClient) {
-        this.executorService = executorService;
-        this.tcpClient = tcpClient;
+        super(executorService, tcpClient, "Book");
     }
 
+    /*
     @Override
     public CompletableFuture<Optional<Book>> create(Book entity) throws ValidatorException {
         CompletableFuture<Optional<Book>> future = CompletableFuture.supplyAsync(() -> {
@@ -90,4 +81,5 @@ public class BookServiceClient implements IBookService {
     public CompletableFuture<Optional<Book>> delete(Integer integer) {
         return null;
     }
+    */
 }

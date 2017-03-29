@@ -4,93 +4,90 @@ import ro.ubb.bookstore.common.model.Book;
 import ro.ubb.bookstore.common.model.Client;
 import ro.ubb.bookstore.common.model.Order;
 import ro.ubb.bookstore.common.model.validators.OrderException;
+import ro.ubb.bookstore.common.service.IBookService;
+import ro.ubb.bookstore.common.service.IClientService;
+import ro.ubb.bookstore.common.service.IOrderService;
 import ro.ubb.bookstore.server.repository.Repository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 
-public class OrderService extends CRUDService<Integer, Order> {
-    private BookService bookService;
-    private ClientService clientService;
+public class OrderService extends CRUDService<Integer, Order> implements IOrderService {
+    private IBookService bookService;
+    private IClientService clientService;
 
-    public OrderService(Repository<Integer, Order> entityRepository, BookService bookService, ClientService clientService, ExecutorService executorService) {
+    public OrderService(Repository<Integer, Order> entityRepository, IBookService bookService, IClientService clientService, ExecutorService executorService) {
         super(entityRepository, executorService);
         this.bookService = bookService;
         this.clientService = clientService;
     }
 
-    // TODO: rewrite every method from CRUD service (with @Override) and before
-    // calling the methods, check if books are present (and enough)
-    // and if clients also exists
-    /*
     @Override
-    public Optional<Order> create(Order order) throws OrderException {
+    public CompletableFuture<Optional<Order>> create(Order order) throws OrderException {
         int bookId = order.getBookID();
         int clientId = order.getClientID();
-        Optional<Client> optClient = clientService.read(clientId);
-        if (!clientService.read(clientId).isPresent())
-            throw new OrderException("Inexistent Client");
-        Optional<Book> optBook = bookService.read(bookId);
-        if (!optBook.isPresent())
-            throw new OrderException("Inexistent Book");
-        if(optBook.get().getCnt() < order.getCnt())
-            throw new OrderException("Insufficient Book stock");
-        Book book = optBook.get();
-        book.setCnt(book.getCnt() - order.getCnt());
-        bookService.update(book);
-        return super.create(order);
+        CompletableFuture<Optional<Book>> optBook = bookService.read(bookId);
+        CompletableFuture<Optional<Client>> optClient = clientService.read(clientId);
+        CompletableFuture<Optional<Order>> future = optClient.thenAcceptBoth(optBook, (clientOpt, bookOpt) -> {
+            if (!clientOpt.isPresent())
+                throw new OrderException("Inexistent Client");
+            if (!bookOpt.isPresent())
+                throw new OrderException("Inexistent Book");
+            Book book = bookOpt.get();
+            book.setCnt(book.getCnt() - order.getCnt());
+            bookService.update(book);
+        }).thenCompose(s -> super.create(order));
+        return future;
     }
 
     @Override
-    public Optional<Order> update(Order order) throws OrderException {
+    public CompletableFuture<Optional<Order>> update(Order order) throws OrderException {
         int bookId = order.getBookID();
         int clientId = order.getClientID();
-        if (!clientService.read(clientId).isPresent())
-            throw new OrderException("Inexistent Client");
-        Optional<Book> optBook = bookService.read(bookId);
-        if (!optBook.isPresent())
-            throw new OrderException("Inexistent Book");
+        CompletableFuture<Optional<Client>> clientFuture = clientService.read(clientId);
+        CompletableFuture<Optional<Book>> bookFuture = bookService.read(bookId);
+        CompletableFuture<Optional<Order>> oldOrderFuture = read(order.getID());
 
-        Optional<Order> oldOrderOpt = read(order.getID());
-        if(!oldOrderOpt.isPresent())
-            return Optional.empty();
-        Order oldOrder = oldOrderOpt.get();
-        Book book = bookService.read(bookId).get();
-
-        int cntDelta = order.getCnt() - oldOrder.getCnt();
-        if(book.getCnt() < cntDelta)
-            throw new OrderException("Insufficient Book stock");
-        book.setCnt(book.getCnt() - cntDelta);
-        bookService.update(book);
-
-        return super.update(order);
+        CompletableFuture<Optional<Order>> future = clientFuture.thenCombine(bookFuture, (clientOpt, bookOpt) -> {
+            if (!clientOpt.isPresent())
+                throw new OrderException("Inexistent Client");
+            if (!bookOpt.isPresent())
+                throw new OrderException("Inexistent Book");
+            Book book = bookOpt.get();
+            return book;
+        }).thenCombine(oldOrderFuture, (book, oldOrderOpt) -> {
+            if(!oldOrderOpt.isPresent())
+                return Optional.empty();
+            Order oldOrder = oldOrderOpt.get();
+            int cntDelta = order.getCnt() - oldOrder.getCnt();
+            if(book.getCnt() < cntDelta)
+                throw new OrderException("Insufficient Book stock");
+            book.setCnt(book.getCnt() - cntDelta);
+            bookService.update(book);
+            return book;
+        }).thenCompose(s -> super.update(order));
+        return future;
     }
 
-    private Map<Client, Integer> getAggregatedBookCnt() {
-        Map<Client, Integer> cnt = new HashMap<>();
-        StreamSupport.stream(this.readAll().spliterator(), false)
-            .forEach(x -> {
-                Client c = clientService.read(x.getClientID()).get();
-                Integer lastTotal = cnt.get(c);
-                if(lastTotal == null)
-                    lastTotal = new Integer(0);
-
-                cnt.put(c, lastTotal + x.getCnt());
-            });
-        return cnt;
+    private CompletableFuture<Map<Integer, Integer>> getAggregatedBookCnt() {
+        CompletableFuture<Iterable<Order>> future = this.readAll();
+        return future.thenApply(iter ->
+            StreamSupport.stream(iter.spliterator(), false)
+                .collect(Collectors.groupingBy(Order::getClientID, Collectors.summingInt(Order::getCnt)))
+        );
     }
 
-    public List<Map.Entry<Client, Integer>> getStatistics() {
-        Map<Client, Integer> cnt = getAggregatedBookCnt();
-        return cnt.entrySet().stream()
-                .sorted((x1, x2) -> Integer.compare(x1.getValue(), x2.getValue()))
-                .collect(Collectors.toList());
+    public CompletableFuture<List<Map.Entry<Integer, Integer>>> getStatistics() {
+        CompletableFuture<Map<Integer, Integer>> future = getAggregatedBookCnt();
+        return future.thenApply(cnt ->
+                cnt.entrySet().stream()
+                        .sorted((x1, x2) -> Integer.compare(x1.getValue(), x2.getValue()))
+                        .collect(Collectors.toList()));
     }
-    */
 }

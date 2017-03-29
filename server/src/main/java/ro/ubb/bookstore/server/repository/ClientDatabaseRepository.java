@@ -94,10 +94,13 @@ public class ClientDatabaseRepository extends DatabaseConnection implements Repo
         String query = "INSERT INTO clients (id, name, email, address) " +
             String.format("VALUES (%d, '%s', '%s', '%s');", c.getID(), c.getName(), c.getEmail(), c.getAddress());
 
+        Optional<Client> opt = findOne(c.getID());
+        if(opt.isPresent())
+            return opt;
+
         executeUpdate(query);
 
-        // TODO: make sure this is what I want to return
-        return Optional.ofNullable(c);
+        return Optional.empty();
     }
 
     /**
@@ -113,6 +116,9 @@ public class ClientDatabaseRepository extends DatabaseConnection implements Repo
 
         Optional<Client> ret = findOne(id);
 
+        if(!ret.isPresent())
+            return null;
+
         String query = "DELETE FROM clients WHERE id='" + id.toString() + "';";
         executeUpdate(query);
 
@@ -121,7 +127,7 @@ public class ClientDatabaseRepository extends DatabaseConnection implements Repo
 
     /**
      * Method updates a record
-     * @param entity
+     * @param c
      *            must not be null.
      * @return
      * @throws ValidatorException
@@ -132,11 +138,15 @@ public class ClientDatabaseRepository extends DatabaseConnection implements Repo
 
         validator.validate(c);
 
+        Optional<Client> opt = findOne(c.getID());
+
+        if(!opt.isPresent())
+            return Optional.ofNullable(c);
+
         String query = String.format("UPDATE clients SET id='%d', name='%s', email='%s', address='%s' WHERE id='%d';", c.getID(), c.getName(), c.getEmail(), c.getAddress(), c.getID());
 
         executeUpdate(query);
 
-        // TODO: make sure this is what I want to return
-        return Optional.ofNullable(c);
+        return Optional.empty();
     }
 }
