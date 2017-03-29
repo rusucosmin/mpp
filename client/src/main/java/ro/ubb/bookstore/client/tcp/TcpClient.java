@@ -1,11 +1,7 @@
 package ro.ubb.bookstore.client.tcp;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
-
-import ro.ubb.bookstore.common.service.RequestServiceException;
 import ro.ubb.bookstore.common.model.Message;
+import ro.ubb.bookstore.common.service.RequestServiceException;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,7 +34,7 @@ public class TcpClient {
                 throw new RequestServiceException(response.body());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new RequestServiceException(e);
         } finally {
             try {
@@ -46,7 +42,7 @@ public class TcpClient {
                     outputStream.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }

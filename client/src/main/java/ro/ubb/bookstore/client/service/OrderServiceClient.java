@@ -37,9 +37,8 @@ public class OrderServiceClient extends CRUDServiceClient<Integer, Order> implem
                 else
                     return new ArrayList<>();
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new BookStoreException(e.getMessage());
             }
-            throw new BookStoreException("Exception while getting statistics");
         });
     }
 }

@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.StreamSupport;
@@ -43,8 +42,8 @@ public class Main {
                     return new Message(Message.OK, "null");
             } catch (Exception e) {
                 e.printStackTrace();
+                return new Message(Message.ERROR, e.getMessage());
             }
-            return new Message(Message.ERROR, "");
         });
     }
 
@@ -58,15 +57,10 @@ public class Main {
                     return new Message(Message.OK, StringSerialize.toString(opt.get()));
                 else
                     return new Message(Message.OK, "null");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
+                return new Message(Message.ERROR, e.getMessage());
             }
-            return new Message(Message.ERROR, "");
-
         });
     }
 
@@ -79,14 +73,10 @@ public class Main {
                 StreamSupport.stream(iter.spliterator(), false)
                         .forEach((e) -> arrayList.add(e));
                 return new Message(Message.OK, StringSerialize.toString(arrayList));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
+                return new Message(Message.ERROR, e.getMessage());
             }
-            return new Message(Message.ERROR, "");
         });
     }
 
@@ -101,14 +91,10 @@ public class Main {
                     return new Message(Message.OK, StringSerialize.toString(opt.get()));
                 else
                     return new Message(Message.OK, "null");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
+                return new Message(Message.ERROR, e.getMessage());
             }
-            return new Message(Message.ERROR, "");
         });
 
     }
@@ -125,8 +111,8 @@ public class Main {
                     return new Message(Message.OK, "null");
             } catch (Exception e) {
                 e.printStackTrace();
+                return new Message(Message.ERROR, e.getMessage());
             }
-            return new Message(Message.ERROR, "");
         });
 
     }
@@ -204,8 +190,8 @@ public class Main {
                 return new Message(Message.OK, StringSerialize.toString(arrayList));
             } catch(Exception e) {
                 e.printStackTrace();
+                return new Message(Message.ERROR, e.getMessage());
             }
-            return new Message(Message.ERROR, "");
         });
 
         tcpServer.startServer();

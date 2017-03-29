@@ -118,6 +118,7 @@ public class Console {
                 System.out.println("Successfully added");
         } catch(Exception e) {
             System.out.println("Error while saving entity");
+            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
@@ -296,7 +297,8 @@ public class Console {
                 System.out.println("No such item.");
         }catch(Exception e) {
             System.out.println("There was an error while trying to delete an entity");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            //e.printStackTrace();
         }
     }
 
@@ -318,7 +320,6 @@ public class Console {
         this.handleDelete(future);
     }
 
-    // @return an {@code Optional} - null if the entity was updated otherwise (e.g. id does not exist) returns the
     private <T extends BaseEntity<Integer>> void handleUpdate(CompletableFuture<Optional<T>> future) {
         try {
             this.waitForFuture(future);
@@ -329,7 +330,8 @@ public class Console {
                 System.out.println("No such item " + opt.get().toString());
         } catch(Exception e) {
             System.out.println("There was an error while updating the entity");
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+            //e.printStackTrace();
         }
     }
 
@@ -368,35 +370,39 @@ public class Console {
 
     private void searchBook() {
         String searchTerm = this.readString("Search term: ");
-        CompletableFuture<Iterable<Book>> future = this.bookService.readAll();
-        future.thenAccept((iterable) -> {
-            StreamSupport.stream(iterable.spliterator(), false)
-                .filter(x -> x.getTitle().contains(searchTerm) ||
-                             x.getAuthor().contains(searchTerm))
-                .forEach(x -> System.out.println(x));
-        });
         try {
+            CompletableFuture<Iterable<Book>> future = this.bookService.readAll();
+            future.thenAccept((iterable) -> {
+                StreamSupport.stream(iterable.spliterator(), false)
+                    .filter(x -> x.getTitle().contains(searchTerm) ||
+                                 x.getAuthor().contains(searchTerm))
+                    .forEach(x -> System.out.println(x));
+            });
             this.waitForFuture(future);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("There was an erroe while searching...");
+            System.out.println(e.getMessage());
+            //e.printStackTrace();
         }
     }
 
     private void searchClient() {
         String searchTerm = this.readString("Search term: ");
 
-        CompletableFuture<Iterable<Client>> future = this.clientService.readAll();
-        future.thenAccept((iterable) -> {
-        StreamSupport.stream(iterable.spliterator(), false)
-                .filter(x -> x.getName().contains(searchTerm) ||
-                         x.getAddress().contains(searchTerm) ||
-                         x.getEmail().contains(searchTerm))
-                .forEach(x -> System.out.println(x));
-        });
         try {
+            CompletableFuture<Iterable<Client>> future = this.clientService.readAll();
+            future.thenAccept((iterable) -> {
+            StreamSupport.stream(iterable.spliterator(), false)
+                    .filter(x -> x.getName().contains(searchTerm) ||
+                             x.getAddress().contains(searchTerm) ||
+                             x.getEmail().contains(searchTerm))
+                    .forEach(x -> System.out.println(x));
+            });
             this.waitForFuture(future);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("There was an error while searching...");
+            System.out.println(e.getMessage());
+            //e.printStackTrace();
         }
     }
 

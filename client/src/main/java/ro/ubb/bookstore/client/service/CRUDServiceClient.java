@@ -35,7 +35,7 @@ public class CRUDServiceClient<ID, T extends BaseEntity<ID>> implements ICRUDSer
                 return Optional.empty();
             else
                 return Optional.ofNullable((T) StringSerialize.fromString(response.body()));
-        throw new BookStoreException("Message ERROR from server");
+        throw new BookStoreException(response.body());
     }
     @Override
     public CompletableFuture<Optional<T>> create(T entity) throws ValidatorException {
@@ -44,8 +44,8 @@ public class CRUDServiceClient<ID, T extends BaseEntity<ID>> implements ICRUDSer
                 return requestOptional(new Message(this.CREATE, StringSerialize.toString(entity)));
             } catch(Exception e) {
                 e.printStackTrace();
+                throw new BookStoreException(e.getMessage());
             }
-            throw new BookStoreException("Error while saving entity...");
         }, executorService);
     }
 
@@ -56,8 +56,8 @@ public class CRUDServiceClient<ID, T extends BaseEntity<ID>> implements ICRUDSer
                 return requestOptional(new Message(this.READ, id.toString()));
             } catch(Exception e) {
                 e.printStackTrace();
+                throw new BookStoreException(e.getMessage());
             }
-            throw new BookStoreException("Error while reading entity...");
         }, executorService);
     }
 
@@ -74,8 +74,8 @@ public class CRUDServiceClient<ID, T extends BaseEntity<ID>> implements ICRUDSer
                 return new ArrayList<T>();
             } catch(Exception e) {
                 e.printStackTrace();
+                throw new BookStoreException(e.getMessage());
             }
-            throw new BookStoreException("Error while reading all entities...");
         }, executorService);
     }
 
@@ -86,8 +86,8 @@ public class CRUDServiceClient<ID, T extends BaseEntity<ID>> implements ICRUDSer
                 return this.requestOptional(new Message(this.UPDATE, StringSerialize.toString(entity)));
             } catch(Exception e) {
                 e.printStackTrace();
+                throw new BookStoreException(e.getMessage());
             }
-            throw new BookStoreException("Error while updating entity...");
         }, executorService);
     }
 
@@ -98,8 +98,8 @@ public class CRUDServiceClient<ID, T extends BaseEntity<ID>> implements ICRUDSer
                 return this.requestOptional(new Message(this.DELETE, id.toString()));
             } catch(Exception e) {
                 e.printStackTrace();
+                throw new BookStoreException(e.getMessage());
             }
-            throw new BookStoreException("Error while deleting entity...");
         }, executorService);
     }
 }

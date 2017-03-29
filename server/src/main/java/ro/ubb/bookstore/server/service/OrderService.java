@@ -32,18 +32,26 @@ public class OrderService extends CRUDService<Integer, Order> implements IOrderS
     public CompletableFuture<Optional<Order>> create(Order order) throws OrderException {
         int bookId = order.getBookID();
         int clientId = order.getClientID();
-        CompletableFuture<Optional<Book>> optBook = bookService.read(bookId);
-        CompletableFuture<Optional<Client>> optClient = clientService.read(clientId);
-        CompletableFuture<Optional<Order>> future = optClient.thenAcceptBoth(optBook, (clientOpt, bookOpt) -> {
+        CompletableFuture<Optional<Book>> bookFuture = bookService.read(bookId);
+        CompletableFuture<Optional<Client>> clientFuture = clientService.read(clientId);
+        CompletableFuture<Optional<Order>> oldOrderFuture = this.read(order.getID());
+
+        return clientFuture.thenCombine(bookFuture, (clientOpt, bookOpt) -> {
             if (!clientOpt.isPresent())
                 throw new OrderException("Inexistent Client");
             if (!bookOpt.isPresent())
                 throw new OrderException("Inexistent Book");
             Book book = bookOpt.get();
+            if(book.getCnt() < order.getCnt())
+                throw new OrderException("Insufficient Book stock");
+            return book;
+        }).thenCombine(oldOrderFuture, (book, oldOrderOpt) -> {
+            if(oldOrderOpt.isPresent())
+                return oldOrderOpt;
             book.setCnt(book.getCnt() - order.getCnt());
             bookService.update(book);
-        }).thenCompose(s -> super.create(order));
-        return future;
+            return book;
+        }).thenCompose(book -> super.create(order));
     }
 
     @Override
@@ -54,7 +62,7 @@ public class OrderService extends CRUDService<Integer, Order> implements IOrderS
         CompletableFuture<Optional<Book>> bookFuture = bookService.read(bookId);
         CompletableFuture<Optional<Order>> oldOrderFuture = read(order.getID());
 
-        CompletableFuture<Optional<Order>> future = clientFuture.thenCombine(bookFuture, (clientOpt, bookOpt) -> {
+        return clientFuture.thenCombine(bookFuture, (clientOpt, bookOpt) -> {
             if (!clientOpt.isPresent())
                 throw new OrderException("Inexistent Client");
             if (!bookOpt.isPresent())
@@ -69,10 +77,8 @@ public class OrderService extends CRUDService<Integer, Order> implements IOrderS
             if(book.getCnt() < cntDelta)
                 throw new OrderException("Insufficient Book stock");
             book.setCnt(book.getCnt() - cntDelta);
-            bookService.update(book);
             return book;
         }).thenCompose(s -> super.update(order));
-        return future;
     }
 
     private CompletableFuture<Map<Integer, Integer>> getAggregatedBookCnt() {

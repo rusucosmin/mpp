@@ -42,7 +42,7 @@ public class TcpServer {
                 System.out.println("Client accepted");
                 executorService.submit(new ClientHandler(socket));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RequestServiceException(e);
         }
@@ -68,7 +68,6 @@ public class TcpServer {
                 UnaryOperator<Message> methodHandler = methodHandlers.get(request.header());
                 Message response = methodHandler.apply(request);
                 System.out.println("computed response: " + response);
-                // TODO handle exceptions
 
                 response.writeTo(outputStream);
                 outputStream.flush();
