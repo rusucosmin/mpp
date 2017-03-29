@@ -1,12 +1,12 @@
 package ro.ubb.bookstore.server.model.validators;
 
-import ro.ubb.bookstore.server.model.Client;
+import ro.ubb.bookstore.common.model.validators.ClientException;
+import ro.ubb.bookstore.common.model.validators.ClientValidator;
+import ro.ubb.bookstore.common.model.Client;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static org.junit.Assert.*;
 
 public class ClientValidatorTest {
     @Rule

@@ -1,4 +1,4 @@
-package ro.ubb.bookstore.server.model;
+package ro.ubb.bookstore.common.model;
 
 /**
  * Class to store an Order (that is a client-book pair)

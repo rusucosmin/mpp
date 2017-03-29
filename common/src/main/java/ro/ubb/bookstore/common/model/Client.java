@@ -1,9 +1,4 @@
-package ro.ubb.bookstore.server.model;
-
-import org.omg.PortableServer.SERVANT_RETENTION_POLICY_ID;
-import ro.ubb.bookstore.server.model.BaseEntity;
-
-import java.io.Serializable;
+package ro.ubb.bookstore.common.model;
 
 /**
  * Client Class to represent a Client

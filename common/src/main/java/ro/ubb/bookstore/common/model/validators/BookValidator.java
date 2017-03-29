@@ -1,6 +1,6 @@
-package ro.ubb.bookstore.server.model.validators;
+package ro.ubb.bookstore.common.model.validators;
 
-import ro.ubb.bookstore.server.model.Book;
+import ro.ubb.bookstore.common.model.Book;
 import org.apache.commons.lang3.StringUtils;
 import java.util.Calendar;
 

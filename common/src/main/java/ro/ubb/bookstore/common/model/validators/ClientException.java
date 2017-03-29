@@ -1,4 +1,4 @@
-package ro.ubb.bookstore.server.model.validators;
+package ro.ubb.bookstore.common.model.validators;
 
 /**
  * ClientException

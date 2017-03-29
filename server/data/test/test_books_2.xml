@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <books>
-    <ro.ubb.bookstore.server.model.Book id="1">
+    <ro.ubb.bookstore.common.model.Book id="1">
         <title>models</title>
         <author>mark</author>
         <year>2010</year>
         <cnt>100</cnt>
-    </ro.ubb.bookstore.server.model.Book>
-    <ro.ubb.bookstore.server.model.Book id="2">
+    </ro.ubb.bookstore.common.model.Book>
+    <ro.ubb.bookstore.common.model.Book id="2">
         <title>the game</title>
         <author>neil</author>
         <year>2011</year>
         <cnt>2</cnt>
-    </ro.ubb.bookstore.server.model.Book>
+    </ro.ubb.bookstore.common.model.Book>
 </books>

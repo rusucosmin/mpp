@@ -1,23 +1,24 @@
-package ro.ubb.bookstore.server.view;
+package ro.ubb.bookstore.client.view;
 
-import ro.ubb.bookstore.server.model.Book;
-import ro.ubb.bookstore.server.model.Client;
-import ro.ubb.bookstore.server.model.Order;
-import ro.ubb.bookstore.server.model.validators.BookException;
-import ro.ubb.bookstore.server.model.validators.ClientException;
-import ro.ubb.bookstore.server.model.validators.ValidatorException;
+import ro.ubb.bookstore.common.model.Book;
+import ro.ubb.bookstore.common.model.Client;
+import ro.ubb.bookstore.common.model.Order;
+import ro.ubb.bookstore.common.model.validators.BookException;
+import ro.ubb.bookstore.common.model.validators.ClientException;
+import ro.ubb.bookstore.common.model.validators.ValidatorException;
 
-import ro.ubb.bookstore.server.service.BookService;
-import ro.ubb.bookstore.server.service.ClientService;
-import ro.ubb.bookstore.server.service.OrderService;
+import ro.ubb.bookstore.common.service.IBookService;
+//import ro.ubb.bookstore.server.service.IClientService;
+//import ro.ubb.bookstore.server.service.IOrderService;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.*;
 
 public class Console {
-    private BookService bookService;
-    private ClientService clientService;
-    private OrderService orderService;
+    private IBookService bookService;
+//    private ClientService clientService;
+//    private OrderService orderService;
     private Scanner stdin;
 
     /**
@@ -26,10 +27,11 @@ public class Console {
      * @param clientService - to handle client operations
      * @param orderService - to handle order operations
      */
-    public Console(BookService bookService, ClientService clientService, OrderService orderService) {
+//    public Console(BookService bookService, ClientService clientService, OrderService orderService) {
+    public Console(IBookService bookService) {
         this.bookService = bookService;
-        this.clientService = clientService;
-        this.orderService = orderService;
+//        this.clientService = clientService;
+//        this.orderService = orderService;
         this.stdin = new Scanner(System.in);
     }
 
@@ -37,24 +39,35 @@ public class Console {
      *  Method prints all the available books
      */
     public void printAllBooks() {
-        StreamSupport.stream(this.bookService.readAll().spliterator(), false)
-                     .forEach(x -> System.out.println(x));
+        try {
+            CompletableFuture<Iterable<Book>> future = this.bookService.readAll();
+            System.out.println("Waiting");
+            while(!future.isDone()) {
+                System.out.println(".");
+                Thread.sleep(2);
+            }
+            Iterable<Book> iter = future.get();
+            StreamSupport.stream(iter.spliterator(), false)
+                    .forEach(x -> System.out.println(x));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      *  Method prints all the available clients
      */
     public void printAllClients() {
-        StreamSupport.stream(this.clientService.readAll().spliterator(), false)
-                     .forEach(x -> System.out.println(x));
+//        StreamSupport.stream(this.clientService.readAll().spliterator(), false)
+//                     .forEach(x -> System.out.println(x));
     }
 
     /**
      *  Method prints all the available orders
      */
     public void printAllOrders() {
-        StreamSupport.stream(this.orderService.readAll().spliterator(), false)
-                     .forEach(x -> System.out.println(x));
+//        StreamSupport.stream(this.orderService.readAll().spliterator(), false)
+//                     .forEach(x -> System.out.println(x));
     }
 
     /**
@@ -102,9 +115,22 @@ public class Console {
 
         try {
             Book b = new Book(id, author, title, year, cnt);
-            this.bookService.create(b);
+            CompletableFuture<Optional<Book>> future = bookService.create(b);
+            System.out.print("Waiting");
+            while(!future.isDone()) {
+                System.out.print(".");
+                Thread.sleep(2);
+            }
+            System.out.println("");
+            Optional<Book> opt = future.get();
+            if(opt.isPresent())
+                System.out.println("A book with the same ID is already present: " + opt.get().toString());
+            else
+                System.out.println("Successfully saved book: " + b.toString());
         } catch(ValidatorException e) {
             e.printStackTrace(System.out);
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -112,6 +138,7 @@ public class Console {
      * Method adds a new client from the user
      */
     public void addClient() {
+    /*
         int id = this.readInt("Client ID: ", "Client ID must be an integer");
         String name = this.readString("Name: ");
         String email = this.readString("Email: ");
@@ -123,12 +150,14 @@ public class Console {
         } catch(ValidatorException e) {
             e.printStackTrace(System.out);
         }
+    */
     }
 
     /**
      * Method adds a new order from the user
      */
     public void addOrder() {
+    /*
         // int id = this.readInt("Client ID: ", "Client ID must be an integer");
         int clientID = this.readInt("Client ID: ", "Client ID must be an integer");
         int bookID = this.readInt("Book ID: ", "Book ID must be an integer");
@@ -140,6 +169,7 @@ public class Console {
         } catch(ValidatorException e) {
             e.printStackTrace(System.out);
         }
+    */
     }
 
     /**
@@ -256,40 +286,49 @@ public class Console {
     }
 
     private void sortClients() {
+        /*
         List<Map.Entry<Client, Integer>> list =
                 orderService.getStatistics();
         list.stream().forEach(x -> System.out.println(x.getKey() + " total: " + x.getValue()));
+        */
     }
 
 
     private void deleteBook() {
+        /*
         int id = this.readInt("Book ID: ", "Book ID must be an integer");
         Optional<Book> opt = this.bookService.delete(id);
         if(opt.isPresent())
             System.out.println("Successfully removed Book:\n" + opt.get().toString());
         else
             System.out.println("Book ID not present");
+            */
     }
 
     private void deleteClient() {
+        /*
         int id = this.readInt("Client ID: ", "Client ID must be an integer");
         Optional<Client> opt = this.clientService.delete(id);
         if(opt.isPresent())
             System.out.println("Successfully removed Client:\n" + opt.get().toString());
         else
             System.out.println("Client ID not present");
+            */
     }
 
     private void deleteOrder() {
+        /*
         int orderID = this.readInt("Order ID: ", "Order ID must be an integer");
         Optional<Order> opt = this.orderService.delete(orderID);
         if(opt.isPresent())
             System.out.println("Successfully removed Order:\n" + opt.get().toString());
         else
             System.out.println("Order ID not present");
+            */
     }
 
     private void updateBook() {
+        /*
         int id = this.readInt("Book ID: ", "Book ID must be an integer");
         Optional<Book> opt = this.bookService.read(id);
         if(opt.isPresent()) {
@@ -307,9 +346,11 @@ public class Console {
         else {
             System.out.println("Book ID not present");
         }
+        */
     }
 
     private void updateClient() {
+        /*
         int id = this.readInt("Client ID: ", "Client ID must be an integer");
         Optional<Client> opt = this.clientService.read(id);
         if(opt.isPresent()) {
@@ -327,9 +368,11 @@ public class Console {
         else {
             System.out.println("Client ID not present");
         }
+        */
     }
 
     private void updateOrder() {
+        /*
         int orderID = this.readInt("Order ID: ", "Order ID must be an integer");
         Optional<Order> opt = this.orderService.read(orderID);
         if(opt.isPresent()) {
@@ -348,18 +391,22 @@ public class Console {
         else {
             System.out.println("Order ID not present");
         }
+        */
     }
 
     private void searchBook() {
+        /*
         String searchTerm = this.readString("Search term: ");
 
         StreamSupport.stream(this.bookService.readAll().spliterator(), false)
             .filter(x -> x.getTitle().contains(searchTerm) ||
                          x.getAuthor().contains(searchTerm))
             .forEach(x -> System.out.println(x));
+            */
     }
 
     private void searchClient() {
+        /*
         String searchTerm = this.readString("Search term: ");
 
         StreamSupport.stream(this.clientService.readAll().spliterator(), false)
@@ -367,6 +414,7 @@ public class Console {
                          x.getAddress().contains(searchTerm) ||
                          x.getEmail().contains(searchTerm))
             .forEach(x -> System.out.println(x));
+            */
     }
 
     /**

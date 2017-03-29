@@ -4,11 +4,6 @@ apply plugin: 'application'
 
 mainClassName = "Main"
 
-group = 'main.java.bookstore'
-version = '0.1.0'
-
-description = """"""
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -20,7 +15,7 @@ repositories {
      mavenCentral()
 }
 dependencies {
-    compile group: 'joda-time', name: 'joda-time', version:'2.2'
+    compile project(':common')
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
     compile group: 'commons-validator', name: 'commons-validator', version:'1.6'
     compile group: 'postgresql', name: 'postgresql', version: '9.1-901.jdbc4'

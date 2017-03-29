@@ -1,14 +1,13 @@
 package ro.ubb.bookstore.server.repository;
 
-import ro.ubb.bookstore.server.model.BaseEntity;
-import ro.ubb.bookstore.server.model.Book;
-import ro.ubb.bookstore.server.model.validators.BookValidator;
+import ro.ubb.bookstore.common.model.BaseEntity;
+import ro.ubb.bookstore.common.model.Book;
+import ro.ubb.bookstore.common.model.validators.BookValidator;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

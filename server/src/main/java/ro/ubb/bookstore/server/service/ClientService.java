@@ -1,7 +1,9 @@
 package ro.ubb.bookstore.server.service;
 
-import ro.ubb.bookstore.server.model.Client;
+import ro.ubb.bookstore.common.model.Client;
 import ro.ubb.bookstore.server.repository.Repository;
+
+import java.util.concurrent.ExecutorService;
 
 /**
  * ClientService
@@ -9,7 +11,7 @@ import ro.ubb.bookstore.server.repository.Repository;
  *      - contains the usual CRUD operations on clients and other specific methods
  */
 public class ClientService extends CRUDService<Integer, Client> {
-    public ClientService(Repository<Integer, Client> clientRepository) {
-        super(clientRepository);
+    public ClientService(Repository<Integer, Client> clientRepository, ExecutorService executorService) {
+        super(clientRepository, executorService);
     }
 }

@@ -1,14 +1,14 @@
 package ro.ubb.bookstore.server.model.validators;
 
-import ro.ubb.bookstore.server.model.Book;
+import ro.ubb.bookstore.common.model.validators.BookException;
+import ro.ubb.bookstore.common.model.validators.BookValidator;
+import ro.ubb.bookstore.common.model.Book;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.util.Calendar;
-
-import static org.junit.Assert.*;
 
 public class BookValidatorTest {
     BookValidator bookValidator;

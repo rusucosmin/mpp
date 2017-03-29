@@ -1,14 +1,14 @@
 package ro.ubb.bookstore.server.model;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ro.ubb.bookstore.common.model.BaseEntity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class BaseEntityTest {
 
-    BaseEntity <Integer> intModel;
+    BaseEntity<Integer> intModel;
     BaseEntity <String> stringModel;
 
     @Before

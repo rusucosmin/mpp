@@ -1,8 +1,7 @@
 package ro.ubb.bookstore.server.repository;
 
-import ro.ubb.bookstore.server.model.Book;
-import ro.ubb.bookstore.server.model.validators.BookValidator;
-import org.apache.commons.collections.IterableMap;
+import ro.ubb.bookstore.common.model.Book;
+import ro.ubb.bookstore.common.model.validators.BookValidator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,15 +20,11 @@ public class XmlRepositoryTest {
     @Before
     public void setUp() {
         repo = new XmlRepository<Integer, Book>(new BookValidator(), "./data/test/test_books_2.xml");
-    }
-
-    @Test
-    public void init() throws Exception {
         List<Book> books = StreamSupport.stream(repo.findAll().spliterator(), false).collect(Collectors.toList());
         assertEquals(books.size(), 2);
         Book book1 = books.get(0);
         Book book2 = books.get(1);
-        if(book1.getID() > book2.getID()) {
+        if (book1.getID() > book2.getID()) {
             Book aux = book1;
             book1 = book2;
             book2 = book1;
@@ -54,7 +49,7 @@ public class XmlRepositoryTest {
         assertEquals(books.size(), 2);
         Book book1 = books.get(0);
         Book book2 = books.get(1);
-        if(book1.getID() > book2.getID()) {
+        if (book1.getID() > book2.getID()) {
             Book aux = book1;
             book1 = book2;
             book2 = book1;
@@ -71,15 +66,4 @@ public class XmlRepositoryTest {
         assertEquals(book2.getYear(), new Integer(2011));
         assertEquals(book2.getCnt(), new Integer(2));
     }
-
-    @Test
-    public void delete() throws Exception {
-
-    }
-
-    @Test
-    public void update() throws Exception {
-
-    }
-
 }

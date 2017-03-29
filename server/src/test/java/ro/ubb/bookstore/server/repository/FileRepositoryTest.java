@@ -1,7 +1,7 @@
 package ro.ubb.bookstore.server.repository;
 
-import ro.ubb.bookstore.server.model.Book;
-import ro.ubb.bookstore.server.model.validators.BookValidator;
+import ro.ubb.bookstore.common.model.Book;
+import ro.ubb.bookstore.common.model.validators.BookValidator;
 import org.junit.Before;
 import org.junit.Test;
 

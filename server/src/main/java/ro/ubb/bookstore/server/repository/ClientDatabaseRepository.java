@@ -1,20 +1,14 @@
 package ro.ubb.bookstore.server.repository;
 
-import ro.ubb.bookstore.server.model.BaseEntity;
-import ro.ubb.bookstore.server.model.Book;
-import ro.ubb.bookstore.server.model.Client;
-import ro.ubb.bookstore.server.model.validators.Validator;
-import ro.ubb.bookstore.server.model.validators.ValidatorException;
+import ro.ubb.bookstore.common.model.BaseEntity;
+import ro.ubb.bookstore.common.model.Client;
+import ro.ubb.bookstore.common.model.validators.Validator;
+import ro.ubb.bookstore.common.model.validators.ValidatorException;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-import java.lang.reflect.Field;
 import java.sql.*;
 
 /**

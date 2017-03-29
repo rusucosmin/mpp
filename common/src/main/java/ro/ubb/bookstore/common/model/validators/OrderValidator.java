@@ -1,10 +1,7 @@
-package ro.ubb.bookstore.server.model.validators;
+package ro.ubb.bookstore.common.model.validators;
 
-import ro.ubb.bookstore.server.model.Order;
+import ro.ubb.bookstore.common.model.Order;
 
-/**
- * Created by cosmin on 23/03/2017.
- */
 public class OrderValidator implements Validator<Order> {
     @Override
     public void validate(Order entity) throws OrderException {

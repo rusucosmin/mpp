@@ -1,16 +1,16 @@
 package ro.ubb.bookstore.server.service;
 
-import ro.ubb.bookstore.server.model.Book;
-import ro.ubb.bookstore.server.model.Client;
-import ro.ubb.bookstore.server.model.Order;
-import ro.ubb.bookstore.server.model.validators.OrderException;
+import ro.ubb.bookstore.common.model.Book;
+import ro.ubb.bookstore.common.model.Client;
+import ro.ubb.bookstore.common.model.Order;
+import ro.ubb.bookstore.common.model.validators.OrderException;
 import ro.ubb.bookstore.server.repository.Repository;
-import ro.ubb.bookstore.server.service.BookService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -19,8 +19,8 @@ public class OrderService extends CRUDService<Integer, Order> {
     private BookService bookService;
     private ClientService clientService;
 
-    public OrderService(Repository<Integer, Order> entityRepository, BookService bookService, ClientService clientService) {
-        super(entityRepository);
+    public OrderService(Repository<Integer, Order> entityRepository, BookService bookService, ClientService clientService, ExecutorService executorService) {
+        super(entityRepository, executorService);
         this.bookService = bookService;
         this.clientService = clientService;
     }
@@ -28,6 +28,7 @@ public class OrderService extends CRUDService<Integer, Order> {
     // TODO: rewrite every method from CRUD service (with @Override) and before
     // calling the methods, check if books are present (and enough)
     // and if clients also exists
+    /*
     @Override
     public Optional<Order> create(Order order) throws OrderException {
         int bookId = order.getBookID();
@@ -91,4 +92,5 @@ public class OrderService extends CRUDService<Integer, Order> {
                 .sorted((x1, x2) -> Integer.compare(x1.getValue(), x2.getValue()))
                 .collect(Collectors.toList());
     }
+    */
 }

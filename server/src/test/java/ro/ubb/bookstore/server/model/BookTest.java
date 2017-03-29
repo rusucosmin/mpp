@@ -2,6 +2,7 @@ package ro.ubb.bookstore.server.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import ro.ubb.bookstore.common.model.Book;
 
 import static org.junit.Assert.*;
 

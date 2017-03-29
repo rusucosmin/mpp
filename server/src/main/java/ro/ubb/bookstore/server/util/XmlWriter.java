@@ -1,6 +1,6 @@
 package ro.ubb.bookstore.server.util;
 
-import ro.ubb.bookstore.server.model.BaseEntity;
+import ro.ubb.bookstore.common.model.BaseEntity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

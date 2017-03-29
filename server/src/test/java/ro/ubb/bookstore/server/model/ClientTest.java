@@ -2,8 +2,9 @@ package ro.ubb.bookstore.server.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import ro.ubb.bookstore.common.model.Client;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ClientTest {
     Client client;

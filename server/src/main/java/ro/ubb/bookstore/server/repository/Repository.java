@@ -1,7 +1,7 @@
 package ro.ubb.bookstore.server.repository;
 
-import ro.ubb.bookstore.server.model.BaseEntity;
-import ro.ubb.bookstore.server.model.validators.ValidatorException;
+import ro.ubb.bookstore.common.model.BaseEntity;
+import ro.ubb.bookstore.common.model.validators.ValidatorException;
 
 import java.util.Optional;
 

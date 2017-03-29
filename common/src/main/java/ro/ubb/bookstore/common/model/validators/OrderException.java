@@ -1,6 +1,4 @@
-package ro.ubb.bookstore.server.model.validators;
-
-import ro.ubb.bookstore.server.model.validators.ValidatorException;
+package ro.ubb.bookstore.common.model.validators;
 
 /**
  * Created by cosmin on 23/03/2017.

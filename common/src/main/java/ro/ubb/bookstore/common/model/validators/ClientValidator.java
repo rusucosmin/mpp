@@ -1,6 +1,6 @@
-package ro.ubb.bookstore.server.model.validators;
+package ro.ubb.bookstore.common.model.validators;
 
-import ro.ubb.bookstore.server.model.Client;
+import ro.ubb.bookstore.common.model.Client;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 

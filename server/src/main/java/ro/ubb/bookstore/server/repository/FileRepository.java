@@ -1,23 +1,15 @@
 package ro.ubb.bookstore.server.repository;
 
-import ro.ubb.bookstore.server.model.BaseEntity;
-import ro.ubb.bookstore.server.model.validators.Validator;
-import ro.ubb.bookstore.server.model.validators.ValidatorException;
+import ro.ubb.bookstore.common.model.BaseEntity;
+import ro.ubb.bookstore.common.model.validators.Validator;
+import ro.ubb.bookstore.common.model.validators.ValidatorException;
 import org.xml.sax.SAXException;
-import ro.ubb.bookstore.server.util.XmlReader;
-import ro.ubb.bookstore.server.util.XmlWriter;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
-import javax.swing.text.html.Option;
-import javax.swing.text.html.parser.Entity;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 /**

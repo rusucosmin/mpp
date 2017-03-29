@@ -1,10 +1,13 @@
 package ro.ubb.bookstore.server.service;
 
-import ro.ubb.bookstore.server.model.BaseEntity;
-import ro.ubb.bookstore.server.model.validators.ValidatorException;
+import ro.ubb.bookstore.common.model.BaseEntity;
+import ro.ubb.bookstore.common.model.validators.ValidatorException;
+import ro.ubb.bookstore.common.service.ICRUDService;
 import ro.ubb.bookstore.server.repository.Repository;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 
 /**
  * CRUDService
@@ -14,11 +17,13 @@ import java.util.Optional;
  * @param <T> - the Classes that we want to store in the repository (the class should extend BaseEntity ID
  *              since we use the ID as key in the repository
  */
-public class CRUDService<ID, T extends BaseEntity<ID>> {
+public class CRUDService<ID, T extends BaseEntity<ID>> implements ICRUDService<ID, T> {
     protected Repository<ID, T> entityRepository;
+    protected ExecutorService executor;
 
-    public CRUDService(Repository<ID, T> entityRepository) {
+    public CRUDService(Repository<ID, T> entityRepository, ExecutorService executor) {
         this.entityRepository = entityRepository;
+        this.executor = executor;
     }
 
     /**
@@ -27,8 +32,8 @@ public class CRUDService<ID, T extends BaseEntity<ID>> {
      * @return
      * @throws ValidatorException in case of an Exception of an invalid entity
      */
-    public Optional<T> create(T entity) throws ValidatorException {
-        return this.entityRepository.save(entity);
+    public CompletableFuture<Optional<T>> create(T entity) throws ValidatorException {
+        return CompletableFuture.supplyAsync(() -> this.entityRepository.save(entity), executor);
     }
 
     /**
@@ -36,16 +41,16 @@ public class CRUDService<ID, T extends BaseEntity<ID>> {
      * @param id
      * @return
      */
-    public Optional<T> read(ID id) {
-        return this.entityRepository.findOne(id);
+    public CompletableFuture<Optional<T>> read(ID id) {
+        return CompletableFuture.supplyAsync(() -> this.entityRepository.findOne(id), executor);
     }
 
     /**
      * Method do readAll the entities in the current repository
      * @return
      */
-    public Iterable<T> readAll() {
-        return this.entityRepository.findAll();
+    public CompletableFuture<Iterable<T>> readAll() {
+        return CompletableFuture.supplyAsync(() -> this.entityRepository.findAll(), executor);
     }
 
     /**
@@ -54,8 +59,8 @@ public class CRUDService<ID, T extends BaseEntity<ID>> {
      * @return
      * @throws ValidatorException
      */
-    public Optional<T> update(T entity) throws ValidatorException {
-        return this.entityRepository.update(entity);
+    public CompletableFuture<Optional<T>> update(T entity) throws ValidatorException {
+        return CompletableFuture.supplyAsync(() -> this.entityRepository.update(entity), executor);
     }
 
     /**
@@ -63,7 +68,7 @@ public class CRUDService<ID, T extends BaseEntity<ID>> {
      * @param id
      * @return
      */
-    public Optional<T> delete(ID id) {
-        return this.entityRepository.delete(id);
+    public CompletableFuture<Optional<T>> delete(ID id) {
+        return CompletableFuture.supplyAsync(() -> this.entityRepository.delete(id), executor);
     }
 }
