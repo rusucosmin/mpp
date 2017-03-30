@@ -1,7 +1,15 @@
 apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'application'
+
+mainClassName = "ro.ubb.bookstore.client.ClientApp"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+run {
+    standardInput = System.in
+}
 
 repositories {
     mavenCentral()
@@ -10,4 +18,13 @@ repositories {
 dependencies {
     compile project(':common')
     testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'ClientApp'
+    }
+
+    baseName = 'bookstore'
+    version =  '0.1.0'
 }

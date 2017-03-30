@@ -44,13 +44,12 @@ public class Console {
             this.waitForFuture(future);
             Iterable<T> iter = future.get();
             StreamSupport.stream(iter.spliterator(), false)
-                    .forEach(x -> System.out.println(x));
+                         .forEach(x -> System.out.println(x));
         } catch(Exception e) {
             System.out.println("There was an exception while getting all the entities");
             e.printStackTrace();
         }
     }
-
 
     /**
      *  Method prints all the available books
