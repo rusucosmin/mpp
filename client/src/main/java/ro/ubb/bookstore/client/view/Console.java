@@ -324,9 +324,9 @@ public class Console {
             this.waitForFuture(future);
             Optional<T> opt = future.get();
             if(!opt.isPresent())
-                System.out.println("Successfully updated item.");
+                System.out.println("No such item!");
             else
-                System.out.println("No such item " + opt.get().toString());
+                System.out.println("Successfully updated item: " + opt.get().toString());
         } catch(Exception e) {
             System.out.println("There was an error while updating the entity");
             System.out.println(e.getMessage());

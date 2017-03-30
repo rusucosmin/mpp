@@ -148,9 +148,9 @@ public class Main {
 //        orderRepository = new InMemoryRepository<>(orderValidator);
 
         //file repo
-        bookRepository = new FileRepository<>(bookValidator, "./data/books.file");
-        clientRepository = new FileRepository<>(clientValidator, "./data/clients.file");
-        orderRepository = new FileRepository<>(orderValidator, "./data/orders.file");
+//        bookRepository = new FileRepository<>(bookValidator, "./data/books.file");
+//        clientRepository = new FileRepository<>(clientValidator, "./data/clients.file");
+//        orderRepository = new FileRepository<>(orderValidator, "./data/orders.file");
 
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         IBookService bookService = new BookService(bookRepository, executorService);
