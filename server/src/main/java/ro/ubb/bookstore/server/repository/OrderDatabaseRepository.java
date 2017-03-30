@@ -1,16 +1,13 @@
 package ro.ubb.bookstore.server.repository;
 
-import ro.ubb.bookstore.common.model.BaseEntity;
-import ro.ubb.bookstore.common.model.Client;
 import ro.ubb.bookstore.common.model.Order;
 import ro.ubb.bookstore.common.model.validators.Validator;
 import ro.ubb.bookstore.common.model.validators.ValidatorException;
 
-import java.util.Optional;
-import java.util.List;
+import java.sql.ResultSet;
 import java.util.ArrayList;
-
-import java.sql.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * DatabaseRepository implementation for the Repository
@@ -79,7 +76,7 @@ public class OrderDatabaseRepository extends DatabaseConnection implements Repos
 
     /**
      * Method creates a new record
-     * @param entity
+     * @param x
      *            must not be null.
      * @return
      * @throws ValidatorException
@@ -126,7 +123,7 @@ public class OrderDatabaseRepository extends DatabaseConnection implements Repos
 
     /**
      * Method updates a record
-     * @param entity
+     * @param x
      *            must not be null.
      * @return
      * @throws ValidatorException
@@ -140,12 +137,12 @@ public class OrderDatabaseRepository extends DatabaseConnection implements Repos
         Optional<Order> ret = findOne(x.getID());
 
         if(!ret.isPresent())
-            return Optional.ofNullable(x);
+            return Optional.empty();
 
         String query = String.format("UPDATE orders SET id='%d', clientID='%d', bookID='%d', cnt='%d' WHERE id='%d';", x.getID(), x.getClientID(), x.getBookID(), x.getCnt(), x.getID());
 
         executeUpdate(query);
 
-        return Optional.empty();
+        return Optional.ofNullable(x);
     }
 }

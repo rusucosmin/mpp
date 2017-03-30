@@ -137,12 +137,12 @@ public class BookDatabaseRepository extends DatabaseConnection implements Reposi
         Optional<Book> ret = findOne(b.getID());
 
         if(!ret.isPresent())
-            return Optional.ofNullable(b);
+            return Optional.empty();
 
         String query = String.format("UPDATE books SET id='%d', title='%s', author='%s', year='%d', cnt='%d' WHERE id='%d';", b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt(), b.getID());
 
         executeUpdate(query);
 
-        return Optional.empty();
+        return Optional.ofNullable(b);
     }
 }

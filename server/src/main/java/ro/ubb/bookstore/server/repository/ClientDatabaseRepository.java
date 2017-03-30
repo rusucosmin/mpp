@@ -1,20 +1,16 @@
 package ro.ubb.bookstore.server.repository;
 
-import ro.ubb.bookstore.common.model.BaseEntity;
 import ro.ubb.bookstore.common.model.Client;
 import ro.ubb.bookstore.common.model.validators.Validator;
 import ro.ubb.bookstore.common.model.validators.ValidatorException;
 
-import java.util.Optional;
-import java.util.List;
+import java.sql.ResultSet;
 import java.util.ArrayList;
-
-import java.sql.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * DatabaseRepository implementation for the Repository
- * @param <ID>
- * @param <T>
  */
 public class ClientDatabaseRepository extends DatabaseConnection implements Repository<Integer, Client> {
     Validator<Client> validator;
@@ -80,7 +76,7 @@ public class ClientDatabaseRepository extends DatabaseConnection implements Repo
 
     /**
      * Method creates a new record
-     * @param entity
+     * @param c
      *            must not be null.
      * @return
      * @throws ValidatorException
@@ -141,12 +137,12 @@ public class ClientDatabaseRepository extends DatabaseConnection implements Repo
         Optional<Client> opt = findOne(c.getID());
 
         if(!opt.isPresent())
-            return Optional.ofNullable(c);
+            return Optional.empty();
 
         String query = String.format("UPDATE clients SET id='%d', name='%s', email='%s', address='%s' WHERE id='%d';", c.getID(), c.getName(), c.getEmail(), c.getAddress(), c.getID());
 
         executeUpdate(query);
 
-        return Optional.empty();
+        return Optional.ofNullable(c);
     }
 }

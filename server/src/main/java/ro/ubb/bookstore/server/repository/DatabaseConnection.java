@@ -1,15 +1,11 @@
 package ro.ubb.bookstore.server.repository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import java.lang.reflect.Field;
 import java.sql.*;
 
 public class DatabaseConnection {
+    /**
+     * DatabaseConnection
+     */
     private Connection conn = null;
 
     public DatabaseConnection(String DB_URL, String USER, String PASS) {

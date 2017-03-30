@@ -8,10 +8,7 @@ import ro.ubb.bookstore.common.service.ICRUDService;
 import ro.ubb.bookstore.common.service.IClientService;
 import ro.ubb.bookstore.common.service.IOrderService;
 import ro.ubb.bookstore.common.utils.StringSerialize;
-import ro.ubb.bookstore.server.repository.BookDatabaseRepository;
-import ro.ubb.bookstore.server.repository.ClientDatabaseRepository;
-import ro.ubb.bookstore.server.repository.OrderDatabaseRepository;
-import ro.ubb.bookstore.server.repository.Repository;
+import ro.ubb.bookstore.server.repository.*;
 import ro.ubb.bookstore.server.service.BookService;
 import ro.ubb.bookstore.server.service.ClientService;
 import ro.ubb.bookstore.server.service.OrderService;
@@ -151,9 +148,9 @@ public class Main {
 //        orderRepository = new InMemoryRepository<>(orderValidator);
 
         //file repo
-//        bookRepository = new FileRepository<>(bookValidator, "./data/books.file");
-//        clientRepository = new FileRepository<>(clientValidator, "./data/clients.file");
-//        orderRepository = new FileRepository<>(orderValidator, "./data/orders.file");
+        bookRepository = new FileRepository<>(bookValidator, "./data/books.file");
+        clientRepository = new FileRepository<>(clientValidator, "./data/clients.file");
+        orderRepository = new FileRepository<>(orderValidator, "./data/orders.file");
 
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         IBookService bookService = new BookService(bookRepository, executorService);
