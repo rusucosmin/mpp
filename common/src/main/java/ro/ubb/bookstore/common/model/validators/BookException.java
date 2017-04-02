@@ -1,0 +1,18 @@
+package ro.ubb.bookstore.common.model.validators;
+
+/**
+ * BookExceptino
+ */
+public class BookException extends ValidatorException {
+    public BookException(Throwable cause) {
+        super(cause);
+    }
+
+    public BookException(String message) {
+        super(message);
+    }
+
+    public BookException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}

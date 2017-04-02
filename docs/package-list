@@ -1,6 +1,15 @@
 
-model
-model.validators
-repository
-service
-view
+ro.ubb.bookstore.client
+ro.ubb.bookstore.client.service
+ro.ubb.bookstore.client.tcp
+ro.ubb.bookstore.client.view
+ro.ubb.bookstore.common.model
+ro.ubb.bookstore.common.model.validators
+ro.ubb.bookstore.common.service
+ro.ubb.bookstore.common.utils
+ro.ubb.bookstore.common.utils.futures
+ro.ubb.bookstore.server.model
+ro.ubb.bookstore.server.model.validators
+ro.ubb.bookstore.server.repository
+ro.ubb.bookstore.server.service
+ro.ubb.bookstore.server.util
