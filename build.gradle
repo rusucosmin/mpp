@@ -1,25 +1,19 @@
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'application'
+allprojects {
+    group 'ro.ubb.c04-remoting-jdbctemplate'
+    version '1.0-SNAPSHOT'
 
-mainClassName = "Main"
+    apply plugin: 'java'
 
-group = 'ro.ubb.bookstore'
-version = '0.1.0'
+    sourceCompatibility = 1.8
 
-description = """"""
+    repositories {
+        mavenCentral()
+    }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.11'
 
-run {
-    standardInput = System.in
-}
+        compile group: 'org.springframework', name: 'spring-context', version: '4.3.7.RELEASE'
 
-repositories {
-     mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version:'4.12'
+    }
 }

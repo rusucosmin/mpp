@@ -1,0 +1,2 @@
+include ':c04-remoting-jdbctemplate-common'
+project(':c04-remoting-jdbctemplate-common').projectDir = new File(settingsDir, '../c04-remoting-jdbctemplate-common')
