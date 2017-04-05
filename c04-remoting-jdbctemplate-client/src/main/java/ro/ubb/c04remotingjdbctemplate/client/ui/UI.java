@@ -3,8 +3,11 @@ package ro.ubb.c04remotingjdbctemplate.client.ui;
 import org.springframework.context.ApplicationContext;
 import ro.ubb.c04remotingjdbctemplate.client.service.BookServiceClient;
 import ro.ubb.c04remotingjdbctemplate.client.service.ClientServiceClient;
+import ro.ubb.c04remotingjdbctemplate.client.service.OrderServiceClient;
 import ro.ubb.c04remotingjdbctemplate.common.Book;
 import ro.ubb.c04remotingjdbctemplate.common.Client;
+import ro.ubb.c04remotingjdbctemplate.common.Order;
+import ro.ubb.c04remotingjdbctemplate.common.OrderService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -16,12 +19,14 @@ public class UI {
     private Scanner stdin;
     private BookServiceClient bookServiceClient;
     private ClientServiceClient clientServiceClient;
+    private OrderServiceClient orderServiceClient;
     private ApplicationContext context;
     public UI(ApplicationContext context) {
         System.out.println("Hello from ui");
         this.context = context;
         this.bookServiceClient = context.getBean(BookServiceClient.class);
         this.clientServiceClient = context.getBean(ClientServiceClient.class);
+        this.orderServiceClient = context.getBean(OrderServiceClient.class);
         this.stdin = new Scanner(System.in);
     }
 
@@ -118,6 +123,26 @@ public class UI {
                 System.out.println("command: delete client");
                 this.deleteClient();
                 break;
+            case "9":
+                System.out.println("command: print all orders");
+                this.printAllOrders();
+                break;
+            case "10":
+                System.out.println("command: add order");
+                this.addOrder();
+                break;
+            case "11":
+                System.out.println("command: update order");
+                this.updateOrder();
+                break;
+            case "12":
+                System.out.println("command: delete order");
+                this.deleteOrder();
+                break;
+            case "13":
+                System.out.println("command: sort clients");
+                this.sortClients();
+                break;
             case "x":
                 System.exit(0);
                 break;
@@ -125,6 +150,42 @@ public class UI {
                 System.out.println("bad command");
         }
         System.out.println();
+    }
+
+    private void sortClients() {
+    }
+
+    private void deleteOrder() {
+        int orderID = this.readInt("Order ID: ", "Order ID must be an integer");
+        this.orderServiceClient.deleteOrder(orderID);
+    }
+
+    private void updateOrder() {
+        int orderID = this.readInt("Order ID: ", "Order ID must be an integer");
+        int clientID = this.readInt("Client ID: ", "Client ID must be an integer");
+        int bookID = this.readInt("Book ID: ", "Book ID must be an integer");
+        int cnt = this.readInt("Quantity: ", "Quantity must be an integer");
+
+        Order x = new Order(orderID, clientID, bookID, cnt);
+        this.orderServiceClient.updateOrder(x);
+    }
+
+    private void addOrder() {
+        int id = this.readInt("Order ID: ", "Order ID must be an integer");
+        int clientID = this.readInt("Client ID: ", "Client ID must be an integer");
+        int bookID = this.readInt("Book ID: ", "Book ID must be an integer");
+        int cnt = this.readInt("Quantity: ", "Quantity must be an integer");
+
+        Order order = new Order(id, clientID, bookID, cnt);
+        this.orderServiceClient.addOrder(order);
+    }
+
+    /**
+     *  Method prints all the available orders
+     */
+    public void printAllOrders() {
+        List<Order> orders = this.orderServiceClient.getOrders();
+        orders.stream().forEach(System.out::println);
     }
 
     private void updateClient() {
@@ -183,6 +244,14 @@ public class UI {
         System.out.println("6. Add");
         System.out.println("7. Update");
         System.out.println("8. Delete");
+        System.out.println();
+
+        System.out.println("ORDERS");
+        System.out.println("-------");
+        System.out.println("9.  Print all");
+        System.out.println("10. Add");
+        System.out.println("11. Update");
+        System.out.println("12. Delete");
         System.out.println();
 
         System.out.println("x. Exit");
