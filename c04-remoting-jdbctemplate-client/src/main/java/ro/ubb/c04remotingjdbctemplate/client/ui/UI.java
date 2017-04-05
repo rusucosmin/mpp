@@ -22,6 +22,25 @@ public class UI {
     }
 
     /**
+     * Method reads an integer from stdin
+     * @param prompt - message to show before input
+     * @param errorMessage - message to show in case of an error (a non integer number inputted)
+     * @return the number that was read
+     */
+    public int readInt(String prompt, String errorMessage) {
+        int ret;
+        while(true) {
+            System.out.print(prompt);
+            try {
+                ret = Integer.parseInt(this.stdin.nextLine());
+                return ret;
+            } catch(Exception e) {
+                System.out.printf("Error: %s\n", errorMessage);
+            }
+        }
+    }
+
+    /**
      * Method reads a string from stdin
      * @param prompt - message to show before input
      * @return the string that was read
@@ -34,6 +53,20 @@ public class UI {
         return ret;
     }
 
+    /**
+     * Method to add a new book from the user
+     */
+    public void addBook() {
+        int id = this.readInt("Book ID: ", "Book ID must be an integer");
+        String author = this.readString("Author: ");
+        String title = this.readString("Title: ");
+        int year = this.readInt("Year: ", "Publish year must be an integer");
+        int cnt = this.readInt("Quantity: ", "Book quantity must be an integer");
+
+        Book book = new Book(id, author, title, year, cnt);
+        bookServiceClient.addBook(book);
+    }
+
     public void readAndProcessCommand() {
         String commandID = this.readString("> ");
 
@@ -41,6 +74,10 @@ public class UI {
             case "1":
                 System.out.println("command: print all books");
                 this.printAllBooks();
+                break;
+            case "2":
+                System.out.println("command: add book");
+                this.addBook();
                 break;
 
             case "x":
@@ -61,6 +98,7 @@ public class UI {
         System.out.println("BOOKS");
         System.out.println("-----");
         System.out.println("1. Print all");
+        System.out.println("2. Add");
 
         System.out.println("x. Exit");
     }

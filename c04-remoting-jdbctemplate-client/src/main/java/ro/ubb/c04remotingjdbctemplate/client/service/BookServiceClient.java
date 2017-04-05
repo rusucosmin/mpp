@@ -22,5 +22,6 @@ public class BookServiceClient {
         return bookService.getAllBooks();
     }
 
+    public void addBook(Book b) { bookService.addBook(b); }
 
 }

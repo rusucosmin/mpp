@@ -25,8 +25,11 @@ public class BookServiceImpl implements BookService {
          return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Book.class));
     }
 
-    public void save(Book b) {
-        String sql = "insert into books (id, title, author, year, cnt) values (?,?,?)";
+    public void addBook(Book b) {
+        if(b == null)
+            throw new IllegalArgumentException("book is null, too bad");
+
+        String sql = "insert into books (id, title, author, year, cnt) values (?,?,?,?,?)";
         jdbcTemplate.update(sql,  b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt());
     }
 
