@@ -8,4 +8,7 @@ import java.util.List;
 public interface ClientService {
     List<Client> getClients();
     void addClient(Client c);
+    void deleteClient(Integer id);
+
+    void updateClient(Client c);
 }

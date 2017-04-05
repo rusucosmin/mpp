@@ -23,4 +23,10 @@ public class ClientServiceClient {
     public void addClient(Client c) {
         clientService.addClient(c);
     }
+
+    public void updateClient(Client c) {
+        clientService.updateClient(c);
+    }
+
+    public void deleteClient(Integer id) { clientService.deleteClient(id); }
 }

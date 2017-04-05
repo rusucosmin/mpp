@@ -33,20 +33,19 @@ public class BookServiceImpl implements BookService {
         jdbcTemplate.update(sql,  b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt());
     }
 
-    public void update(Book b) {
-        String sql = "update books set id=?, title=? author=? year=? cnt=? where id=?;";
-        jdbcTemplate.update(sql, b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt(), b.getID());
+    public void updateBook(Book b) {
+        if(b == null)
+            throw new IllegalArgumentException("book is null, too bad");
+        String sql = "update books set title=?, author=?, year=?, cnt=? where id=?;";
+        jdbcTemplate.update(sql, b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt(), b.getID());
     }
 
-    public void delete(Book s) {
+    public void deleteBook(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id must not be null");
+        }
         String sql = "delete from books where id=?";
-        jdbcTemplate.update(sql, s.getID());
-    }
-
-    public Book findBySerialNumber(String serial_number) {
-        String sql = "select * from student where serial_number=?;";
-        Book s = jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Book.class), serial_number);
-        return s;
+        jdbcTemplate.update(sql, id);
     }
 
     public int countAll() {

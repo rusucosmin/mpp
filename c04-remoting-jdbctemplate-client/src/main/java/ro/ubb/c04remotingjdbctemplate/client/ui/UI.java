@@ -93,6 +93,14 @@ public class UI {
                 System.out.println("command: add book");
                 this.addBook();
                 break;
+            case "3":
+                System.out.println("command: update book");
+                this.updateBook();
+                break;
+            case "4":
+                System.out.println("command: delete book");
+                this.deleteBook();
+                break;
 
             case "5":
                 System.out.println("command: print all clients");
@@ -102,7 +110,14 @@ public class UI {
                 System.out.println("command: add client");
                 this.addClient();
                 break;
-
+            case "7":
+                System.out.println("command: update client");
+                this.updateClient();
+                break;
+            case "8":
+                System.out.println("command: delete client");
+                this.deleteClient();
+                break;
             case "x":
                 System.exit(0);
                 break;
@@ -112,7 +127,35 @@ public class UI {
         System.out.println();
     }
 
+    private void updateClient() {
+        int id = this.readInt("Client ID: ", "Client ID must be an integer");
+        String name = this.readString("Name: ");
+        String email = this.readString("Email: ");
+        String address = this.readString("Address: ");
 
+        Client c = new Client(id, name, email, address);
+        clientServiceClient.updateClient(c);
+    }
+
+    private void updateBook() {
+        int id = this.readInt("Book ID: ", "Book ID must be an integer");
+        String author = this.readString("Author: ");
+        String title = this.readString("Title: ");
+        int year = this.readInt("Year: ", "Publish year must be an integer");
+        int cnt = this.readInt("Quantity: ", "Book quantity must be an integer");
+        Book b = new Book(id, author, title, year, cnt);
+        bookServiceClient.updateBook(b);
+    }
+
+    private void deleteBook() {
+        int id = this.readInt("Book ID: ", "Book ID must be an integer");
+        this.bookServiceClient.deleteBook(id);
+    }
+
+    private void deleteClient() {
+        int id = this.readInt("Client ID: ", "Client ID must be an integer");
+        this.clientServiceClient.deleteClient(id);
+    }
 
     private void printAllClients() {
         List<Client> clients = this.clientServiceClient.getClients();
@@ -129,12 +172,18 @@ public class UI {
         System.out.println("-----");
         System.out.println("1. Print all");
         System.out.println("2. Add");
+        System.out.println("3. Update");
+        System.out.println("4. Delete");
+        System.out.println();
 
 
         System.out.println("CLIENTS");
         System.out.println("-------");
         System.out.println("5. Print all");
         System.out.println("6. Add");
+        System.out.println("7. Update");
+        System.out.println("8. Delete");
+        System.out.println();
 
         System.out.println("x. Exit");
     }

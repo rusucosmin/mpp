@@ -26,4 +26,19 @@ public class ClientServiceImpl implements ClientService {
         String sql = "INSERT INTO clients (id, name, email, address) VALUES (?, ?, ?, ?);";
         jdbcTemplate.update(sql, c.getID(), c.getName(), c.getEmail(), c.getAddress());
     }
+
+    public void deleteClient(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("id must not be null");
+        }
+        String sql = "DELETE FROM clients WHERE id=?;";
+        jdbcTemplate.update(sql,id);
+    }
+
+    public void updateClient(Client c) {
+        if(c == null)
+            throw new IllegalArgumentException("client is null, too bad");
+        String sql = "update clients set name=?, email=?, address=? where id=?";
+        jdbcTemplate.update(sql, c.getName(), c.getEmail(), c.getAddress(), c.getID());
+    }
 }

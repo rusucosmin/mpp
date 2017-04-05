@@ -24,4 +24,9 @@ public class BookServiceClient {
 
     public void addBook(Book b) { bookService.addBook(b); }
 
+    public void deleteBook(Integer id) { bookService.deleteBook(id); }
+
+    public void updateBook(Book b) {
+        bookService.updateBook(b);
+    }
 }
