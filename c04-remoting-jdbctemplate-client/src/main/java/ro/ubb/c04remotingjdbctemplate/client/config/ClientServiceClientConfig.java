@@ -3,29 +3,27 @@ package ro.ubb.c04remotingjdbctemplate.client.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.rmi.RmiProxyFactoryBean;
-import ro.ubb.c04remotingjdbctemplate.client.service.BookServiceClient;
 import ro.ubb.c04remotingjdbctemplate.client.service.ClientServiceClient;
 import ro.ubb.c04remotingjdbctemplate.common.BookService;
 import ro.ubb.c04remotingjdbctemplate.common.ClientService;
 
 /**
- * @author radu.
+ * Created by Petru on 4/5/2017.
  */
-
 @Configuration
-public class BookServiceClientConfig {
+public class ClientServiceClientConfig {
 
     @Bean
-    public RmiProxyFactoryBean bookService() {
+    public RmiProxyFactoryBean clientService() {
         RmiProxyFactoryBean rmiProxy = new RmiProxyFactoryBean();
-        rmiProxy.setServiceUrl("rmi://localhost:1099/BookService");
-        rmiProxy.setServiceInterface(BookService.class);
+        rmiProxy.setServiceUrl("rmi://localhost:1099/ClientService");
+        rmiProxy.setServiceInterface(ClientService.class);
         return rmiProxy;
     }
 
     @Bean
-    public BookServiceClient bookServiceClient() {
-        BookServiceClient bookServiceClient = new BookServiceClient();
-        return bookServiceClient;
+    ClientServiceClient clientServiceClient() {
+        ClientServiceClient clientServiceClient = new ClientServiceClient();
+        return clientServiceClient;
     }
 }

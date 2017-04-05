@@ -7,6 +7,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
 public class ServerApp {
     public static void main(String[] args) {
-        new AnnotationConfigApplicationContext("ro.ubb.c04remotingjdbctemplate.server.config");
+        new AnnotationConfigApplicationContext("ro.ubb.c04remotingjdbctemplate.server.config.book");
+        new AnnotationConfigApplicationContext("ro.ubb.c04remotingjdbctemplate.server.config.client");
     }
 }

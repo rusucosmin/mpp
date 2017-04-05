@@ -2,7 +2,9 @@ package ro.ubb.c04remotingjdbctemplate.client.ui;
 
 import org.springframework.context.ApplicationContext;
 import ro.ubb.c04remotingjdbctemplate.client.service.BookServiceClient;
+import ro.ubb.c04remotingjdbctemplate.client.service.ClientServiceClient;
 import ro.ubb.c04remotingjdbctemplate.common.Book;
+import ro.ubb.c04remotingjdbctemplate.common.Client;
 
 import java.util.List;
 import java.util.Scanner;
@@ -13,11 +15,13 @@ import java.util.Scanner;
 public class UI {
     private Scanner stdin;
     private BookServiceClient bookServiceClient;
+    private ClientServiceClient clientServiceClient;
     private ApplicationContext context;
     public UI(ApplicationContext context) {
         System.out.println("Hello from ui");
         this.context = context;
         this.bookServiceClient = context.getBean(BookServiceClient.class);
+        this.clientServiceClient = context.getBean(ClientServiceClient.class);
         this.stdin = new Scanner(System.in);
     }
 
@@ -57,14 +61,24 @@ public class UI {
      * Method to add a new book from the user
      */
     public void addBook() {
-        int id = this.readInt("Book ID: ", "Book ID must be an integer");
+        int id = this.readInt("book ID: ", "book ID must be an integer");
         String author = this.readString("Author: ");
         String title = this.readString("Title: ");
         int year = this.readInt("Year: ", "Publish year must be an integer");
-        int cnt = this.readInt("Quantity: ", "Book quantity must be an integer");
+        int cnt = this.readInt("Quantity: ", "book quantity must be an integer");
 
         Book book = new Book(id, author, title, year, cnt);
         bookServiceClient.addBook(book);
+    }
+
+    private void addClient() {
+        int id = this.readInt("client ID: ", "client ID must be an integer");
+        String name = this.readString("Name: ");
+        String email = this.readString("Email: ");
+        String address = this.readString("Address: ");
+
+        Client client = new Client(id, name, email, address);
+        clientServiceClient.addClient(client);
     }
 
     public void readAndProcessCommand() {
@@ -80,6 +94,15 @@ public class UI {
                 this.addBook();
                 break;
 
+            case "5":
+                System.out.println("command: print all clients");
+                this.printAllClients();
+                break;
+            case "6":
+                System.out.println("command: add client");
+                this.addClient();
+                break;
+
             case "x":
                 System.exit(0);
                 break;
@@ -87,6 +110,13 @@ public class UI {
                 System.out.println("bad command");
         }
         System.out.println();
+    }
+
+
+
+    private void printAllClients() {
+        List<Client> clients = this.clientServiceClient.getClients();
+        clients.stream().forEach(System.out::println);
     }
 
     private void printAllBooks() {
@@ -100,11 +130,17 @@ public class UI {
         System.out.println("1. Print all");
         System.out.println("2. Add");
 
+
+        System.out.println("CLIENTS");
+        System.out.println("-------");
+        System.out.println("5. Print all");
+        System.out.println("6. Add");
+
         System.out.println("x. Exit");
     }
 
     public void start() {
-        System.out.println(">-----Book Store-----<");
+        System.out.println(">-----book Store-----<");
 
         while(true) {
             this.showMenu();

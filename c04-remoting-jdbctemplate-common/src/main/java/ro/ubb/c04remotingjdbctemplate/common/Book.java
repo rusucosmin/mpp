@@ -91,7 +91,7 @@ public class Book extends BaseEntity<Integer> {
      */
     @Override
     public String toString() {
-        return "Book{" +
+        return "book{" +
                 "title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", year=" + year +

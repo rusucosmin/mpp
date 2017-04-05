@@ -1,4 +1,4 @@
-package ro.ubb.c04remotingjdbctemplate.server.config;
+package ro.ubb.c04remotingjdbctemplate.server.config.book;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

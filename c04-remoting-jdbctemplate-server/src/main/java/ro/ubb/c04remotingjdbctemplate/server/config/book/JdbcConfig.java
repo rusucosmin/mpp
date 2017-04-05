@@ -1,4 +1,4 @@
-package ro.ubb.c04remotingjdbctemplate.server.config;
+package ro.ubb.c04remotingjdbctemplate.server.config.book;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.postgresql.Driver;

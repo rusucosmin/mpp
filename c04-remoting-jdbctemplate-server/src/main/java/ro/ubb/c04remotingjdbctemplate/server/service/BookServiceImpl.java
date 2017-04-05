@@ -18,8 +18,8 @@ public class BookServiceImpl implements BookService {
 
     public List<Book> getAllBooks() {
 
-        String sql = "select * from books";
-//        return jdbcTemplate.query(sql, (rs, i) -> new Book(rs.getLong("id"), rs.getString("serial_number"),
+        String sql = "select * from books;";
+//        return jdbcTemplate.query(sql, (rs, i) -> new book(rs.getLong("id"), rs.getString("serial_number"),
 //                rs.getString("name"), rs.getInt("group_number")));
 
          return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Book.class));
@@ -29,12 +29,12 @@ public class BookServiceImpl implements BookService {
         if(b == null)
             throw new IllegalArgumentException("book is null, too bad");
 
-        String sql = "insert into books (id, title, author, year, cnt) values (?,?,?,?,?)";
+        String sql = "insert into books (id, title, author, year, cnt) values (?,?,?,?,?);";
         jdbcTemplate.update(sql,  b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt());
     }
 
     public void update(Book b) {
-        String sql = "update books set id=?, title=? author=? year=? cnt=? where id=?";
+        String sql = "update books set id=?, title=? author=? year=? cnt=? where id=?;";
         jdbcTemplate.update(sql, b.getID(), b.getTitle(), b.getAuthor(), b.getYear(), b.getCnt(), b.getID());
     }
 
@@ -44,13 +44,13 @@ public class BookServiceImpl implements BookService {
     }
 
     public Book findBySerialNumber(String serial_number) {
-        String sql = "select * from student where serial_number=?";
+        String sql = "select * from student where serial_number=?;";
         Book s = jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Book.class), serial_number);
         return s;
     }
 
     public int countAll() {
-        String sql = "select count(*) from books";
+        String sql = "select count(*) from books;";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 }
