@@ -1,5 +1,5 @@
-rootProject.name = 'bookstore'
-include 'server'
-include 'client'
-include 'common'
+rootProject.name = 'c04-remoting-jdbctemplate-parent'
+include 'c04-remoting-jdbctemplate-common'
+include 'c04-remoting-jdbctemplate-server'
+include 'c04-remoting-jdbctemplate-client'
 
