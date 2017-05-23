@@ -1,0 +1,18 @@
+<script src="book-new.component.spec.ts"></script><h3>Add Book</h3>
+
+<div>
+  <label>Title: </label>
+  <input #bookTitle/>
+</div>
+<div>
+  <label>Author: </label>
+  <input #bookAuthor/>
+</div>
+<div>
+  <label>Price: </label>
+  <input #bookPrice/>
+</div>
+<div>
+  <button (click)="goBack()">Back</button>
+  <button (click)="save(bookTitle.value, bookAuthor.value, bookPrice.value)">Save</button>
+</div>

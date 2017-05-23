@@ -1,0 +1,21 @@
+<h2>Orders</h2>
+<ol class="orders">
+  <li *ngFor="let order of orders"
+      [class.selected]="order === selectedOrder"
+      (click)="onSelect(order)">
+    Order #{{order.id}}
+    <button (click)="edit(order)">Edit</button>
+    <button (click)="delete(order)">Delete</button>
+  </li>
+</ol>
+<div *ngIf="selectedOrder">
+  <h2>
+    {{selectedOrder.id}} was selected
+  </h2>
+  <h3>
+    {{selectedOrder.client.name}} bought {{selectedOrder.book.title}}.
+  </h3>
+  <button (click)="gotoDetail()">View Details</button>
+</div>
+
+

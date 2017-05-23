@@ -1,0 +1,20 @@
+<script src="book-detail.component.ts"></script>
+<script src="book-detail.component.spec.ts"></script>
+<div *ngIf="book">
+    <h2>Book {{book.title}} by {{book.author}}</h2>
+    <div>
+        <label>Title: </label>
+        <input [(ngModel)]="book.title" placeholder="title">
+    </div>
+    <div>
+        <label>Author: </label>
+        <input [(ngModel)]="book.author" placeholder="author">
+    </div>
+    <div>
+        <label>Price: </label>
+        <input [(ngModel)]="book.price" placeholder="price">
+    </div>
+    <button (click)="goBack()">Back</button>
+    <button (click)="save()">Save</button>
+    <button (click)="delete()">Delete</button>
+</div>

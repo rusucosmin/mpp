@@ -1,0 +1,11 @@
+dependencies {
+    compile group: 'org.springframework', name: 'spring-context-support', version: "$springVersion"
+    compile group: 'org.springframework', name: 'spring-orm', version: "$springVersion"
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: "$springDataVersion"
+
+    compile group: 'org.hibernate', name: 'hibernate-core', version:"$hibernateVersion"
+
+    compile group: 'postgresql', name: 'postgresql', version: "$postgreSqlVersion"
+
+    compile group: 'com.google.guava', name: 'guava', version: "$guavaVersion"
+}

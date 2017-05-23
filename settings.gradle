@@ -1,5 +1,4 @@
-rootProject.name = 'c04-remoting-jdbctemplate-parent'
-include 'c04-remoting-jdbctemplate-common'
-include 'c04-remoting-jdbctemplate-server'
-include 'c04-remoting-jdbctemplate-client'
+rootProject.name = 'mpp'
+include 'bookstorewebapp-core'
+include 'bookstorewebapp-web'
 

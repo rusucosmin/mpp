@@ -1,0 +1,36 @@
+<script src="books-list.component.ts"></script><h2>Books</h2>
+<ol class="books">
+    <li *ngFor="let book of books"
+        [class.selected]="book === selectedBook"
+        (click)="onSelect(book)">
+        {{book.title}}
+        <button (click)="edit(book)">Edit</button>
+        <button (click)="delete(book)">Delete</button>
+
+   </li>
+
+</ol>
+<table>
+  <tr><td>Book id</td><td>Book name</td><td>Book price</td></tr>
+  <tr *ngFor="let book of books"
+    [class.selected]="book === selectedBook"
+    (click)="onSelect(book)">
+    <td>{{book.id}}</td>
+    <td>{{book.title}}</td>
+    <td>{{book.price}}</td>
+    <td>
+      <button (click)="edit(book)">Edit</button>
+    </td>
+    <td>
+      <button (click)="delete(book)">Delete</button>
+    </td>
+  </tr>
+
+</table>
+<div *ngIf="selectedBook">
+    <h2>
+        {{selectedBook.title | uppercase}} was selected
+    </h2>
+    <button (click)="gotoDetail()">View Details</button>
+</div>
+

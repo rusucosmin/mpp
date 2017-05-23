@@ -1,0 +1,28 @@
+<script src="../../clients/client-details/client-details.component.ts"></script>
+<script src="order-details.component.spec.ts"></script>
+<div *ngIf="order">
+  <h2>Order: #{{order.id}}</h2>
+  <div>
+    <p>Client {{order.client.name}} bought the book titled {{order.book.title}}.</p>
+    <label>Order: #</label> {{order.id}}
+  </div>
+  <div>
+    <label>Client: </label>
+    <select [(ngModel)]="selectedClient">
+      <option *ngFor="let client of clients" [ngValue]="client">
+        {{client.name}}
+      </option>
+    </select>
+    <label>Book: </label>
+    <select [(ngModel)]="selectedBook">
+      <option *ngFor="let book of books" [ngValue]="book">
+        {{book.title}}
+      </option>
+    </select>
+  </div>
+  <div>
+    <button (click)="goBack()">Back</button>
+    <button (click)="update(selectedClient, selectedBook)">Save</button>
+    <button (click)="delete()">Delete</button>
+  </div>
+</div>

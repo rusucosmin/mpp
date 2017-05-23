@@ -1,0 +1,12 @@
+<script src="../../orders/order-details/order-details.component.ts"></script>
+<script src="client-details.component.spec.ts"></script>
+<div *ngIf="client">
+    <h2>Client {{client.name}}</h2>
+    <div>
+        <label>Name: </label>
+        <input [(ngModel)]="client.name" placeholder="name">
+    </div>
+    <button (click)="goBack()">Back</button>
+    <button (click)="save(client)">Save</button>
+    <button (click)="delete(client)">Delete</button>
+</div>

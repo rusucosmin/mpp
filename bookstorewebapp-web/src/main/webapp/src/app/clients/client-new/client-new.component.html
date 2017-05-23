@@ -1,0 +1,10 @@
+<script src="client-new.component.ts"></script>
+<h3>Add Client</h3>
+
+<div>
+  <label>Name: </label>
+  <input #clientName/>
+</div>
+<div>
+  <button (click)="save(clientName.value)">Save</button>
+</div>
