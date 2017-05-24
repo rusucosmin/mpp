@@ -60,7 +60,7 @@ public class Client extends BaseEntity<Long> {
                 .filter(o -> o.getBook().equals(book))
                 .findFirst();
         if(order.isPresent())
-            book.getOrders().remove(order.get());
+            this.orders.remove(order.get());
     }
 
     @Override

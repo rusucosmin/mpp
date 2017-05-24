@@ -1,12 +1,22 @@
-<script src="../../orders/order-details/order-details.component.ts"></script>
 <script src="client-details.component.spec.ts"></script>
-<div *ngIf="client">
-    <h2>Client {{client.name}}</h2>
-    <div>
-        <label>Name: </label>
-        <input [(ngModel)]="client.name" placeholder="name">
+<script src="client-details.component.ts"></script>
+
+<div *ngIf="client" class="container">
+  <h2>Client {{client.name}}</h2>
+  <form #clientForm="ngForm">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name"
+             required
+             [(ngModel)]="client.name" name="name" #name="ngModel">
+      <div [hidden]="name.valid || name.pristine"
+           class="alert alert-danger">
+        Name is required
+      </div>
     </div>
-    <button (click)="goBack()">Back</button>
-    <button (click)="save(client)">Save</button>
-    <button (click)="delete(client)">Delete</button>
+    <button type="button" class="btn btn-default" (click)="goBack()">Back</button>
+    <button type="submit" class="btn btn-success" (click)="save()"
+            [disabled]="!clientForm.form.valid">Save</button>
+    <button type="button" class="btn btn-danger" (click)="delete(client)">Delete</button>
+  </form>
 </div>

@@ -1,20 +1,43 @@
 <script src="book-detail.component.ts"></script>
 <script src="book-detail.component.spec.ts"></script>
-<div *ngIf="book">
-    <h2>Book {{book.title}} by {{book.author}}</h2>
-    <div>
-        <label>Title: </label>
-        <input [(ngModel)]="book.title" placeholder="title">
+
+<div *ngIf="book" class="container">
+  <h2>Book {{book.title}} by {{book.author}}</h2>
+  <form #bookForm="ngForm">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" id="title"
+             required
+             [(ngModel)]="book.title" name="title" #title="ngModel">
+      <div [hidden]="title.valid || title.pristine"
+           class="alert alert-danger">
+        Title is required
+      </div>
     </div>
-    <div>
-        <label>Author: </label>
-        <input [(ngModel)]="book.author" placeholder="author">
+    <div class="form-group">
+      <label for="author">Author</label>
+      <input type="text" class="form-control" id="author"
+             required
+             [(ngModel)]="book.author" name="author" #author="ngModel">
+      <div [hidden]="author.valid || author.pristine"
+           class="alert alert-danger">
+        Author is required
+      </div>
     </div>
-    <div>
-        <label>Price: </label>
-        <input [(ngModel)]="book.price" placeholder="price">
+     <div class="form-group">
+      <label for="price">Price</label>
+      <input type="text" class="form-control" id="price"
+             required
+             [(ngModel)]="book.price" name="price" #price="ngModel">
+      <div [hidden]="price.valid || price.pristine"
+           class="alert alert-danger">
+        Price is required
+      </div>
     </div>
-    <button (click)="goBack()">Back</button>
-    <button (click)="save()">Save</button>
-    <button (click)="delete()">Delete</button>
+    <button type="button" class="btn btn-default" (click)="goBack()">Back</button>
+    <button type="submit" class="btn btn-success"
+            (click)="save()"
+            [disabled]="!bookForm.form.valid">Submit</button>
+    <button type="button" class="btn btn-danger" (click)="delete()">Delete</button>
+  </form>
 </div>

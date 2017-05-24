@@ -106,12 +106,12 @@ public class OrdersController {
     @RequestMapping(value = "/orders/{clientId}/{bookId}", method = RequestMethod.DELETE)
     public ResponseEntity deleteOrder(@PathVariable final Long clientId,
                                       @PathVariable final Long bookId) {
-        log.trace("delete order");
+        log.trace("delete order: " + clientId + " / " + bookId);
         Client client = clientService.findOne(clientId);
         log.trace("update client = {}", client);
         client = clientService.updateClient(clientId, client.getName(), client.getBooks()
                 .stream()
-                .map(o -> o.getId())
+                .map(b -> b.getId())
                 .filter(bid -> !bid.equals(bookId))
                 .collect(Collectors.toSet()));
         log.trace("updated client = {}", client);

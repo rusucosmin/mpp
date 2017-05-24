@@ -28,9 +28,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<Client> findAll() {
         //return clientRepository.findAll();
-        //return clientRepository.findAllWithOrdersGraph();
+        return clientRepository.findAllWithOrdersGraph();
         //return clientRepository.findAllWithOrdersSqlQuery();
-        return clientRepository.findAllWithOrdersJpql();
+        //return clientRepository.findAllWithOrdersJpql();
     }
 
     @Override
@@ -54,30 +54,40 @@ public class ClientServiceImpl implements ClientService {
     @Transactional
     public Client updateClient(Long id, String name, Set<Long> books) {
         Client client = clientRepository.findOneWithOrders(id);
+        log.trace("updateClient = {}, name = {}, ids={}", client, name, books);
         client.setName(name);
         /// find bookIds that we should remove
         Set<Long> toBeRemoved = client.getBooks().stream()
                 .map(b -> b.getId())
                 .filter(bid -> !books.contains(bid))
                 .collect(Collectors.toSet());
+        log.trace("idsToBeRemoved = {}", toBeRemoved);
 
         /// remove those books
         List<Book> bookListToBeRemoved = bookRepository.findAll(toBeRemoved);
+
         bookListToBeRemoved.stream()
                 .forEach(client::removeBook);
+
+        log.trace("booksToBeRemoved = {}", bookListToBeRemoved);
 
         /// find books that are already present
         client.getBooks().stream()
                 .map(b -> b.getId())
                 .forEach(bid -> {
-                    if (!books.contains(bid))
+                    if (books.contains(bid))
                         books.remove(bid);
                 });
 
+        log.trace("idsToBeAdded = {}", books);
+
         // add the remaining books
         List<Book> bookList = bookRepository.findAll(books);
+        log.trace("booksToBeAdded = {}", bookList);
+
         bookList.stream()
                 .forEach(client::addBook);
+        log.trace("doneUpdatingClient = {}", client);
         return client;
     }
 

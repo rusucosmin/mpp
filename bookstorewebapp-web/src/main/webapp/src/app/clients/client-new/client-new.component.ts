@@ -15,6 +15,8 @@ export class ClientNewComponent implements OnInit {
               private location: Location) { }
 
   ngOnInit() {
+    this.client = new Client();
+    this.client.name = "Awesome client";
   }
 
   goBack(): void {

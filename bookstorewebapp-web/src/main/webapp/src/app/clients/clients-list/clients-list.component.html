@@ -1,18 +1,23 @@
+<script src="clients-list.component.ts"></script>
+<script src="clients-list.component.spec.ts"></script>
+
 <h2>Clients</h2>
-<ol class="clients">
-    <li *ngFor="let client of clients"
-        [class.selected]="client === selectedClient"
-        (click)="onSelect(client)">
-        {{client.name}}
-        <button (click)="edit(client)">Edit</button>
-        <button (click)="delete(client)">Delete</button>
-    </li>
-</ol>
-<div *ngIf="selectedClient">
-    <h2>
-        {{selectedClient.name | uppercase}} was selected
-    </h2>
-    <button (click)="gotoDetail()">View Details</button>
+<div class="container">
+  <div class="list-group">
+    <a *ngFor="let client of clients" class="list-group-item"
+       [class.active]="client === selectedClient"
+       (click)="onSelect(client)">
+      {{client.name}}
+    </a>
+  </div>
+  <hr>
+  <div *ngIf="selectedClient">
+    <h3>
+      {{selectedClient.name}} was selected
+    </h3>
+    <button type="button" class="btn btn-default" (click)="gotoDetail()">View & Edit</button>
+    <button type="button" class="btn btn-danger" (click)="delete(selectedClient)">Delete</button>
+  </div>
 </div>
 
 

@@ -1,18 +1,24 @@
-<h2>Orders</h2>
-<ol class="orders">
-  <li *ngFor="let order of orders"
-      [class.selected]="order === selectedOrder"
-      (click)="onSelect(order)">
-    Order #{{order.clientId}}/{{order.bookId}}
-    <button (click)="edit(order)">Edit</button>
-    <button (click)="delete(order)">Delete</button>
-  </li>
-</ol>
-<div *ngIf="selectedOrder">
-  <h2>
-    {{selectedOrder.clientName}} bought {{selectedOrder.bookTitle}}.
-  </h2>
-  <button (click)="gotoDetail()">View Details</button>
-</div>
+<script src="../../clients/client-details/client-details.component.ts"></script>
+<script src="orders-list.component.ts"></script>
+<script src="orders-list.component.spec.ts"></script>
 
+<h2>Orders</h2>
+<div class="container">
+  <div class="list-group">
+    <a *ngFor="let order of orders"
+        class="list-group-item"
+        [class.active]="order === selectedOrder"
+        (click)="onSelect(order)">
+      Order {{order.clientId}}/{{order.bookId}}
+    </a>
+  </div>
+  <hr>
+  <div *ngIf="selectedOrder">
+    <h3>
+      {{selectedOrder.clientName}} bought {{selectedOrder.bookTitle}}.
+    </h3>
+    <button type="button" class="btn btn-default" (click)="gotoDetail()">View & Edit</button>
+    <button type="button" class="btn btn-danger" (click)="delete(selectedOrder)">Delete</button>
+  </div>
+</div>
 

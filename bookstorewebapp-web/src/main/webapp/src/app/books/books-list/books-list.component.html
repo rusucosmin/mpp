@@ -1,36 +1,20 @@
-<script src="books-list.component.ts"></script><h2>Books</h2>
-<ol class="books">
-    <li *ngFor="let book of books"
-        [class.selected]="book === selectedBook"
-        (click)="onSelect(book)">
-        {{book.title}}
-        <button (click)="edit(book)">Edit</button>
-        <button (click)="delete(book)">Delete</button>
+<script src="books-list.component.ts"></script>
+<script src="books-list.component.spec.ts"></script>
 
-   </li>
-
-</ol>
-<table>
-  <tr><td>Book id</td><td>Book name</td><td>Book price</td></tr>
-  <tr *ngFor="let book of books"
-    [class.selected]="book === selectedBook"
-    (click)="onSelect(book)">
-    <td>{{book.id}}</td>
-    <td>{{book.title}}</td>
-    <td>{{book.price}}</td>
-    <td>
-      <button (click)="edit(book)">Edit</button>
-    </td>
-    <td>
-      <button (click)="delete(book)">Delete</button>
-    </td>
-  </tr>
-
-</table>
-<div *ngIf="selectedBook">
-    <h2>
-        {{selectedBook.title | uppercase}} was selected
-    </h2>
-    <button (click)="gotoDetail()">View Details</button>
+<h2>Books</h2>
+<div class="container">
+    <div class="list-group">
+      <a *ngFor="let book of books" class="list-group-item"
+        (click)="onSelect(book)" [class.active]="selectedBook === book">
+          {{book.title}}
+      </a>
+    </div>
+    <hr>
+    <div *ngIf="selectedBook">
+        <h3>
+            {{selectedBook.title}} was selected
+        </h3>
+        <button type="button" class="btn btn-default" (click)="gotoDetail()">View & Edit</button>
+        <button type="button" class="btn btn-danger" (click)="delete(selectedBook)">Delete</button>
+    </div>
 </div>
-

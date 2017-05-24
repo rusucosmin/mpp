@@ -14,7 +14,12 @@ export class BookNewComponent implements OnInit {
   constructor(private bookService: BooksService,
               private location: Location) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.book = new Book();
+    this.book.title = "Awesome book";
+    this.book.author = "Insert author";
+    this.book.price = 0;
+  }
 
   goBack(): void {
     this.location.back();

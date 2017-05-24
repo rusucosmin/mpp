@@ -1,28 +1,28 @@
+<script src="order-details.component.ts"></script>
 <script src="../../clients/client-details/client-details.component.ts"></script>
 <script src="order-details.component.spec.ts"></script>
-<div *ngIf="order">
-  <h2>Order: Client ID = {{order.clientId}} Book ID = {{order.bookId}}</h2>
-  <div>
-    <p>Client {{order.clientName}} bought the book titled {{order.bookTitle}}.</p>
-    <label>Order: #</label> {{order.clientId}}/{{order.bookId}}
-  </div>
-  <div>
+
+
+<div *ngIf="order" class="container">
+  <h2>Order {{order.clientId}}/{{order.bookId}}</h2>
+  <h3>Client {{order.clientName}} bought the book titled {{order.bookTitle}}.</h3>
+  <div class="form-group">
     <label>Client: </label>
-    <select [(ngModel)]="selectedClient">
+    <select class="form-control" [(ngModel)]="selectedClient">
       <option *ngFor="let client of clients" [ngValue]="client">
         {{client.name}}
       </option>
     </select>
+  </div>
+  <div class="form-group">
     <label>Book: </label>
-    <select [(ngModel)]="selectedBook">
+    <select class="form-control" [(ngModel)]="selectedBook">
       <option *ngFor="let book of books" [ngValue]="book">
         {{book.title}}
       </option>
     </select>
   </div>
-  <div>
-    <button (click)="goBack()">Back</button>
-    <button (click)="update(selectedClient, selectedBook)">Save</button>
-    <button (click)="delete()">Delete</button>
-  </div>
+  <button type="button" class="btn btn-default" (click)="goBack()">Back</button>
+  <button type="submit" class="btn btn-success" (click)="update(selectedClient, selectedBook)">Save</button>
+  <button type="butotn" class="btn btn-danger" (click)="delete()">Delete</button>
 </div>

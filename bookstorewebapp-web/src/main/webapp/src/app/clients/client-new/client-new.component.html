@@ -1,10 +1,21 @@
 <script src="client-new.component.ts"></script>
-<h3>Add Client</h3>
+<script src="client-new.component.spec.ts"></script>
 
-<div>
-  <label>Name: </label>
-  <input #clientName/>
-</div>
-<div>
-  <button (click)="save(clientName.value)">Save</button>
+<div class="container">
+  <h2>Add Client</h2>
+  <form #clientForm="ngForm">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name"
+             required
+             [(ngModel)]="client.name" name="name" #name="ngModel">
+      <div [hidden]="name.valid || name.pristine"
+           class="alert alert-danger">
+        Name is required
+      </div>
+    </div>
+    <button type="button" class="btn btn-default" (click)="goBack()">Back</button>
+    <button type="submit" class="btn btn-success" (click)="save(name.value)"
+            [disabled]="!clientForm.form.valid">Save</button>
+  </form>
 </div>
