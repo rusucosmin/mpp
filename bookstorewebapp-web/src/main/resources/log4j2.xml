@@ -34,7 +34,7 @@
         <Logger name="org.springframework.web" level="WARN"/>
         <Logger name="org.springframework.http.converter.json" level="WARN"/>
         <Logger name="com.fasterxml.jackson.databind" level="WARN"/>
-        <Logger name="ro.ubb.catalog" level="TRACE"/>
+        <Logger name="com.snowcoders" level="TRACE"/>
 
         <!-- ROOT -->
         <Root level="WARN">

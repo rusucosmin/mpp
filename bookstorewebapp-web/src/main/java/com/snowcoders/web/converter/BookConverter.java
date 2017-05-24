@@ -8,14 +8,22 @@ import org.springframework.stereotype.Component;
 public class BookConverter extends BaseConverter<Book, BookDto> {
     @Override
     public Book convertDtoToModel(BookDto dto) {
-        Book book = new Book(dto.getTitle(), dto.getAuthor(), dto.getPrice());//, new HashSet<>());
+        Book book = Book.builder()
+                .title(dto.getTitle())
+                .author(dto.getAuthor())
+                .price(dto.getPrice())
+                .build();
         book.setId(dto.getId());
         return book;
     }
 
     @Override
     public BookDto convertModelToDto(Book book) {
-        BookDto bookDto = new BookDto(book.getTitle(), book.getAuthor(), book.getPrice());
+        BookDto bookDto = BookDto.builder()
+                .title(book.getTitle())
+                .author(book.getAuthor())
+                .price(book.getPrice())
+                .build();
         bookDto.setId(book.getId());
         return bookDto;
     }

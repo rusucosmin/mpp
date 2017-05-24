@@ -1,18 +1,20 @@
 <script src="book-new.component.spec.ts"></script><h3>Add Book</h3>
 
+<form name="bookForm">
 <div>
   <label>Title: </label>
-  <input #bookTitle/>
+  <input #bookTitle name="bookTitle" ng-model="bookTitle" required/>
 </div>
 <div>
   <label>Author: </label>
-  <input #bookAuthor/>
+  <input #bookAuthor name="bookAuthor" ng-model="bookAuthor" required/>
 </div>
 <div>
   <label>Price: </label>
-  <input #bookPrice/>
+  <input #bookPrice name="bookPrice" ng-model="bookPrice" required/>
 </div>
 <div>
   <button (click)="goBack()">Back</button>
   <button (click)="save(bookTitle.value, bookAuthor.value, bookPrice.value)">Save</button>
 </div>
+</form>

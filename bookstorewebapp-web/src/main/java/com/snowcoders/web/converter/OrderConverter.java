@@ -6,22 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OrderConverter extends BaseConverter<Order, OrderDto> {
+public class OrderConverter extends BaseConverterGeneric<Order, OrderDto> {
     @Autowired
     private BookConverter bookConverter;
     @Autowired
     private ClientConverter clientConverter;
     @Override
     public Order convertDtoToModel(OrderDto dto) {
-        Order order = new Order(clientConverter.convertDtoToModel(dto.getClient()), bookConverter.convertDtoToModel(dto.getBook()));
-        order.setId(dto.getId());
-        return order;
+        throw new RuntimeException("here is your problem!");
     }
 
     @Override
     public OrderDto convertModelToDto(Order order) {
-        OrderDto orderDto = new OrderDto(clientConverter.convertModelToDto(order.getClient()), bookConverter.convertModelToDto(order.getBook()));
-        orderDto.setId(order.getId());
+        OrderDto orderDto = OrderDto.builder()
+                .bookId(order.getBook().getId())
+                .clientId(order.getClient().getId())
+                .bookTitle(order.getBook().getTitle())
+                .clientName(order.getClient().getName())
+                .build();
         return orderDto;
     }
 }

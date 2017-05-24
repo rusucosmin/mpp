@@ -41,16 +41,16 @@ export class OrdersService {
     return Observable.throw(errMsg);
   }
 
-  getOrder(id: number): Observable<Order> {
+  getOrder(clientId: number, bookId: number): Observable<Order> {
     return this.getOrders()
-      .map(orders => orders.find(order => order.id === id));
+      .map(orders => orders.find(order => order.clientId === clientId && order.bookId == bookId));
   }
 
-  update(orderid, clientid, bookid) {
-    let order = {clientid, bookid};
-    const url = `${this.ordersUrl}/${orderid}`;
+  update(oldClientId, oldBookId, clientId, bookId) {
+    let order = {clientId, bookId};
+    const url = `${this.ordersUrl}/${oldClientId}/${oldBookId}`;
     return this.http
-      .put(url, JSON.stringify({"order": order}), {headers: this.headers})
+      .put(url, JSON.stringify(order), {headers: this.headers})
       .map(this.extractOrderData)
       .catch(this.handleError);
   }
@@ -60,18 +60,18 @@ export class OrdersService {
     return body.order || {};
   }
 
-  create(clientid, bookid) {
-    let order = {clientid, bookid};
+  create(clientId, bookId, clientName, bookTitle) {
+    let order = {clientId, bookId, clientName, bookTitle};
     console.log("createRequest: " + JSON.stringify({"order": order}))
     return this.http
-      .post(this.ordersUrl, JSON.stringify({"order": order}), {headers: this.headers})
+      .post(this.ordersUrl, JSON.stringify(order), {headers: this.headers})
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  delete(orderId: number) {
-    console.log('service delete: ' + orderId);
-    const url = `${this.ordersUrl}/${orderId}`;
+  delete(clientId, bookId) {
+    console.log('service delete: ' + clientId + " " + bookId);
+    const url = `${this.ordersUrl}/${clientId}/${bookId}`;
     return this.http
       .delete(url, {headers: this.headers})
       .map(() => null)

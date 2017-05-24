@@ -29,6 +29,7 @@ export class ClientsService {
   }
 
   private handleError(error: Response | any) {
+    console.log("handleError: " + error);
     let errMsg: string;
     if (error instanceof Response) {
       const body = error.json() || '';
@@ -56,15 +57,17 @@ export class ClientsService {
 
   private extractClientData(res: Response) {
     let body = res.json();
+    console.log("done: " + body);
     return body.client || {};
   };
 
   create(name: string) {
     let client = {name};
+    client["books"] = [];
     console.log("createRequest: " + JSON.stringify({"client": client}));
     return this.http
       .post(this.clientsUrl, JSON.stringify({"client": client}), { headers: this.headers })
-      .map(this.extractData)
+      .map(this.extractClientData)
       .catch(this.handleError);
   }
 

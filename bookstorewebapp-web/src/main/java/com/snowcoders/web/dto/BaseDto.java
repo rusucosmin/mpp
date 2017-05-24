@@ -2,6 +2,8 @@ package com.snowcoders.web.dto;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 /**
  * Created by cosmin on 11/05/2017.
  */
@@ -10,6 +12,6 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class BaseDto {
+public class BaseDto implements Serializable {
     private Long id;
 }

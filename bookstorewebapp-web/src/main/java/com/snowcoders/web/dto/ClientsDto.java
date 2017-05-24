@@ -1,17 +1,16 @@
 package com.snowcoders.web.dto;
 
-import com.snowcoders.core.model.Client;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClientsDto {
-    private List<Client> clients;
+    private Set<ClientDto> clients;
 }

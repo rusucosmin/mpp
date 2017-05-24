@@ -25,6 +25,8 @@ export class OrderDetailsComponent implements OnInit {
   order: Order;
   clients: Client[];
   books: Book[];
+  clientId: number;
+  bookId: number;
 
   constructor(private ordersService: OrdersService,
               private clientsService: ClientsService,
@@ -35,7 +37,7 @@ export class OrderDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params
-      .switchMap((params: Params) => this.ordersService.getOrder(+params['id']))
+      .switchMap((params: Params) => this.ordersService.getOrder(+params['clientId'], +params['bookId']))
       .subscribe(order => {
         console.log("got order: " + JSON.stringify({"order": order}));
         this.order = order;
@@ -58,7 +60,7 @@ export class OrderDetailsComponent implements OnInit {
 
 
   delete(): void {
-    this.ordersService.delete(this.order.id)
+    this.ordersService.delete(this.order.clientId, this.order.bookId)
       .subscribe(_ => this.goBack());
   }
 
@@ -69,7 +71,7 @@ export class OrderDetailsComponent implements OnInit {
       alert("Invalid input");
       return ;
     }
-    this.ordersService.update(this.order.id, client.id, book.id)
+    this.ordersService.update(this.order.clientId, this.order.bookId, client.id, book.id)
       .subscribe(_ => this.goBack());
   }
 

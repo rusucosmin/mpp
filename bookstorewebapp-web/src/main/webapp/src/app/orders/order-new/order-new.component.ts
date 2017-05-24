@@ -49,7 +49,7 @@ export class OrderNewComponent implements OnInit {
       alert("Invalid input");
       return ;
     }
-    this.orderService.create(client.id, book.id)
+    this.orderService.create(client.id, book.id, client.name, book.title)
       .subscribe(_ => this.goBack());
   }
 

@@ -1,12 +1,9 @@
 package com.snowcoders.core.model;
 
-import lombok.EqualsAndHashCode;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 @MappedSuperclass
-@EqualsAndHashCode
 public abstract class BaseEntity<ID extends Serializable> implements Serializable {
 
     @Id

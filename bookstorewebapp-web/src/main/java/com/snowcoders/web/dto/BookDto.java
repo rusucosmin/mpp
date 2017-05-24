@@ -1,9 +1,6 @@
 package com.snowcoders.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Created by cosmin on 11/05/2017.
@@ -12,17 +9,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
+@ToString
+@Builder
 public class BookDto extends BaseDto {
     private String title;
     private String author;
     private Double price;
-    @Override
-    public String toString() {
-        return "BookDto{" +
-                "title=" + title +
-                ", author=" + author +
-                ", price=" + String.valueOf(price) +
-                "} " + super.toString();
-
-    }
 }

@@ -25,7 +25,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book createBook(String title, String author, Double price) {
-        Book book = new Book(title, author, price);//, new HashSet<Order>(0));
+        Book book = Book.builder()
+                .title(title)
+                .author(author)
+                .price(price)
+                .build();
         book = bookRepository.save(book);
         return book;
     }

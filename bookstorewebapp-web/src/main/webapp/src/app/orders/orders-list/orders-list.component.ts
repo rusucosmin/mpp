@@ -37,16 +37,16 @@ export class OrdersListComponent implements OnInit {
   }
 
   gotoDetail(): void {
-    this.router.navigate(['/order/detail', this.selectedOrder.id]);
+    this.router.navigate(['/order/detail', this.selectedOrder.clientId, this.selectedOrder.bookId]);
   }
 
   edit(order: Order): void {
-    this.router.navigate(['/order/detail', order.id]);
+    this.router.navigate(['/order/detail', order.clientId, order.bookId]);
   }
 
   delete(order: Order): void {
-    console.log("deleting order " + order.id);
-    this.ordersService.delete(order.id)
+    console.log("deleting order " + order.clientId + "/" + order.bookId);
+    this.ordersService.delete(order.clientId, order.bookId)
       .subscribe(_ => window.location.reload());
   }
 }

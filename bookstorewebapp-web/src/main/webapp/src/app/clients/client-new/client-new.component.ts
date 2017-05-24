@@ -15,7 +15,6 @@ export class ClientNewComponent implements OnInit {
               private location: Location) { }
 
   ngOnInit() {
-
   }
 
   goBack(): void {

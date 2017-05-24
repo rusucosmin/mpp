@@ -1,9 +1,8 @@
 package com.snowcoders.web.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.Set;
 
 /**
  * Created by cosmin on 11/05/2017.
@@ -12,12 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
+@Builder
 public class ClientDto extends BaseDto {
     private String name;
-    @Override
-    public String toString() {
-        return "Client{" +
-                "name=" + this.name +
-                "} " + super.toString();
-    }
+    private Set<Long> books;
 }

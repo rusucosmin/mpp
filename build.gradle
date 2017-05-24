@@ -21,6 +21,7 @@ allprojects {
         javaxServeletApiVersion = '3.1.0'
         slf4jVersion = '1.7.21'
         log4jVersion = '2.5'
+        validationVersion = '1.1.0.Final'
     }
 
     dependencies {
@@ -33,7 +34,13 @@ allprojects {
         compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: "$log4jVersion"
         compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: "$log4jVersion"
         compile group: 'org.apache.logging.log4j', name: 'log4j-1.2-api', version: "$log4jVersion"
+        // https://mvnrepository.com/artifact/javax.validation/validation-api
+        compile group: 'javax.validation', name: 'validation-api', version: "$validationVersion"
 
         compileOnly "org.projectlombok:lombok:1.16.16"
+    }
+
+    task wrapper(type: Wrapper) {
+      gradleVersion = '3.0';
     }
 }
