@@ -1,20 +1,23 @@
 <script src="books-list.component.ts"></script>
 <script src="books-list.component.spec.ts"></script>
 
-<h2>Books</h2>
 <div class="container">
-    <div class="list-group">
-      <a *ngFor="let book of books" class="list-group-item"
-        (click)="onSelect(book)" [class.active]="selectedBook === book">
-          {{book.title}}
-      </a>
-    </div>
-    <hr>
-    <div *ngIf="selectedBook">
-        <h3>
-            {{selectedBook.title}} was selected
-        </h3>
-        <button type="button" class="btn btn-default" (click)="gotoDetail()">View & Edit</button>
-        <button type="button" class="btn btn-danger" (click)="delete(selectedBook)">Delete</button>
-    </div>
+  <h2>Books</h2>
+  <div class="list-group">
+    <a *ngFor="let book of books" class="list-group-item"
+       (click)="onSelect(book)" [class.active]="selectedBook === book">
+      {{book.title}} by {{book.author}}
+    </a>
+  </div>
+  <hr>
+  <div *ngIf="selectedBook">
+    <h4>
+      {{selectedBook.title}} by {{selectedBook.author}}
+    </h4>
+    <h5>
+      Price: {{selectedBook.price}} $
+    </h5>
+    <button type="button" class="btn btn-default" (click)="gotoDetail()">View & Edit</button>
+    <button type="button" class="btn btn-danger" (click)="delete(selectedBook)">Delete</button>
+  </div>
 </div>

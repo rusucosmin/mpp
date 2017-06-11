@@ -1,0 +1,4 @@
+<dataset>
+    <books id="1" title="Models" author="Mark Manson" price="1.0"/>
+    <books id="2" title="The Game" author="Neil Strauss" price="2.0"/>
+</dataset>

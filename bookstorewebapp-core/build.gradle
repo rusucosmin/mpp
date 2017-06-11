@@ -12,4 +12,11 @@ dependencies {
     compile group: 'postgresql', name: 'postgresql', version: "$postgreSqlVersion"
 
     compile group: 'com.google.guava', name: 'guava', version: "$guavaVersion"
+
+    //dbunit-test-config
+    compile group: 'com.zaxxer', name: 'HikariCP', version: "$hikariVersion"
+    compile group: 'org.dbunit', name: 'dbunit', version: "$dbUnitVersion"
+    compile group: 'com.h2database', name: 'h2', version: "$h2DbVersion"
+    compile group: 'com.github.springtestdbunit', name: 'spring-test-dbunit', version: "$springtestdbunitVersion"
+
 }

@@ -1,8 +1,8 @@
 <script src="clients-list.component.ts"></script>
 <script src="clients-list.component.spec.ts"></script>
 
-<h2>Clients</h2>
 <div class="container">
+  <h2>Clients</h2>
   <div class="list-group">
     <a *ngFor="let client of clients" class="list-group-item"
        [class.active]="client === selectedClient"
@@ -12,9 +12,9 @@
   </div>
   <hr>
   <div *ngIf="selectedClient">
-    <h3>
-      {{selectedClient.name}} was selected
-    </h3>
+    <h4>
+      Client name: {{selectedClient.name}}
+    </h4>
     <button type="button" class="btn btn-default" (click)="gotoDetail()">View & Edit</button>
     <button type="button" class="btn btn-danger" (click)="delete(selectedClient)">Delete</button>
   </div>

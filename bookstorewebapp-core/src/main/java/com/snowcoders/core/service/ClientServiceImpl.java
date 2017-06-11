@@ -31,6 +31,7 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.findAllWithOrdersGraph();
         //return clientRepository.findAllWithOrdersSqlQuery();
         //return clientRepository.findAllWithOrdersJpql();
+        //return clientRepository.findAllWithOrdersJpaCriteria();
     }
 
     @Override

@@ -2,13 +2,13 @@
 <script src="orders-list.component.ts"></script>
 <script src="orders-list.component.spec.ts"></script>
 
-<h2>Orders</h2>
 <div class="container">
+  <h2>Orders</h2>
   <div class="list-group">
     <a *ngFor="let order of orders"
-        class="list-group-item"
-        [class.active]="order === selectedOrder"
-        (click)="onSelect(order)">
+       class="list-group-item"
+       [class.active]="order === selectedOrder"
+       (click)="onSelect(order)">
       Order {{order.clientId}}/{{order.bookId}}
     </a>
   </div>
